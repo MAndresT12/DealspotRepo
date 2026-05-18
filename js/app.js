@@ -10,7 +10,8 @@
 /* ── ÚNICA LÍNEA QUE NECESITAS CAMBIAR SI CAMBIAS DE SHEET ── */
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-cKq84KXQEvTuI8Ep7bRM-dAY5OaGTYZbYqBEtFTK5QI2EQV66buYJHbXrgcpgtQTbwn9Kbfzu7eC/pub?gid=1330817725&single=true&output=csv";
 const CACHE_KEY = "ds_sheet_v3";
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
+// const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
+const CACHE_TTL = 0; // 0
 
 const STORE_LABELS = {
   "amazon.com": "Amazon",

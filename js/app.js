@@ -13,6 +13,10 @@ const DEALS_PER_PAGE = 12;
 /* ── i18n ────────────────────────────────────────────────── */
 const I18N = {
   es: {
+    /* App */
+    appName: "AhorraMásUSA",
+    logoSrc: "images/logo-es.png",
+    pageTitle: "AhorraMásUSA — Las Mejores Ofertas",
     /* Header */
     searchPlaceholder: "🔍 Buscar ofertas…",
     /* Hero */
@@ -24,9 +28,14 @@ const I18N = {
     /* Disclosure */
     disclosureText: 'ℹ️ <strong>Aviso:</strong> Este sitio contiene enlaces de afiliados. Podemos ganar una comisión si compras a través de nuestros links, sin costo adicional para ti.',
     /* Cats */
-    catAll: "🌟 Todos", catTec: "💻 Tecnología", catGaming: "🎮 Gaming",
-    catHogar: "🏠 Hogar", catModa: "👗 Moda", catDeportes: "⚽ Deportes",
-    catBelleza: "💄 Belleza", catOtros: "📦 Otros",
+    catAll: "🌟 Todos",
+    catTec: "💻 Tecnología",
+    catGaming: "🎮 Gaming",
+    catHogar: "🏠 Hogar",
+    catModa: "👗 Moda",
+    catDeportes: "⚽ Deportes",
+    catBelleza: "💄 Belleza",
+    catOtros: "📦 Otros",
     /* Section */
     sectionTitle: "🔥 Todas las Ofertas",
     loading: "Cargando ofertas desde Google Sheets…",
@@ -41,16 +50,15 @@ const I18N = {
     remainH: "h restantes",
     remainD: "d restantes",
     dealCount: n => `${n} oferta${n !== 1 ? "s" : ""}`,
-    /* Coupon expiry */
-    couponExpiresIn: "Expira en:",
-    couponExpired: "Cupón expirado",
+    couponValidFor: "⏱ Válido por:",
+    couponExpired: "⚠️ Cupón expirado",
     /* Pagination */
     prevPage: "← Anterior",
     nextPage: "Siguiente →",
     pageOf: (p, t) => `Página ${p} de ${t}`,
     /* How it works */
     howEyebrow: "Guía rápida",
-    howTitle: "¿Cómo funciona DealSpot?",
+    howTitle: "¿Cómo funciona AhorraMásUSA?",
     howItems: [
       {
         q: "¿Qué son los cupones de descuento?",
@@ -66,18 +74,14 @@ const I18N = {
       },
       {
         q: "¿Este sitio cobra algo por usarlo?",
-        a: "No. DealSpot es completamente gratuito para los compradores. Ganamos una pequeña comisión de las tiendas cuando realizas una compra a través de nuestros links, sin ningún costo extra para ti."
+        a: "No. AhorraMásUSA es completamente gratuito para los compradores. Ganamos una pequeña comisión de las tiendas cuando realizas una compra a través de nuestros links, sin ningún costo extra para ti."
       },
       {
         q: "¿Cómo recibo notificaciones de las mejores ofertas?",
         a: "Únete a nuestro grupo de WhatsApp para recibir notificaciones instantáneas de las mejores deals, cupones exclusivos y ofertas flash — totalmente gratis."
       },
     ],
-    /* Community section */
-    communityTitle: "¡Únete a nuestra comunidad!",
-    communitySub: "Recibe las mejores ofertas, cupones exclusivos y alertas flash directamente en tu WhatsApp — totalmente gratis.",
-    communityBtn: "Unirse ahora",
-    /* WhatsApp — ⚠️ REEMPLAZA con tu link real */
+    /* WhatsApp */
     waJoin: "Únete al grupo",
     waTooltip: "🔔 Recibe ofertas en WhatsApp",
     waLink: "https://chat.whatsapp.com/XXXXXX_ESPANOL",
@@ -92,6 +96,9 @@ const I18N = {
   },
 
   en: {
+    appName: "SaveMoreDeals",
+    logoSrc: "images/logo-en.png",
+    pageTitle: "SaveMoreDeals — Best Deals of the Day",
     searchPlaceholder: "🔍 Search deals…",
     heroBadge: "🟢 Auto-updated · ",
     heroDeals: "deals",
@@ -99,9 +106,14 @@ const I18N = {
     heroSub: "Verified deals on tech, gaming, home & more. Links go straight to the store.",
     heroSearch: "🔍 Search all deals…",
     disclosureText: 'ℹ️ <strong>Notice:</strong> This site contains affiliate links. We may earn a commission if you purchase through our links, at no extra cost to you.',
-    catAll: "🌟 All", catTec: "💻 Tech", catGaming: "🎮 Gaming",
-    catHogar: "🏠 Home", catModa: "👗 Fashion", catDeportes: "⚽ Sports",
-    catBelleza: "💄 Beauty", catOtros: "📦 Other",
+    catAll: "🌟 All",
+    catTec: "💻 Tech",
+    catGaming: "🎮 Gaming",
+    catHogar: "🏠 Home",
+    catModa: "👗 Fashion",
+    catDeportes: "⚽ Sports",
+    catBelleza: "💄 Beauty",
+    catOtros: "📦 Other",
     sectionTitle: "🔥 All Deals",
     loading: "Loading deals from Google Sheets…",
     seeOffer: "🛒 See deal →",
@@ -114,13 +126,13 @@ const I18N = {
     remainH: "h left",
     remainD: "d left",
     dealCount: n => `${n} deal${n !== 1 ? "s" : ""}`,
-    couponExpiresIn: "Expires in:",
-    couponExpired: "Coupon expired",
+    couponValidFor: "⏱ Valid for:",
+    couponExpired: "⚠️ Coupon expired",
     prevPage: "← Prev",
     nextPage: "Next →",
     pageOf: (p, t) => `Page ${p} of ${t}`,
     howEyebrow: "Quick guide",
-    howTitle: "How does DealSpot work?",
+    howTitle: "How does SaveMoreDeals work?",
     howItems: [
       {
         q: "What are coupon codes?",
@@ -136,16 +148,13 @@ const I18N = {
       },
       {
         q: "Does this site charge anything?",
-        a: "No. DealSpot is completely free for shoppers. We earn a small commission from stores when you make a purchase through our links, at absolutely no extra cost to you."
+        a: "No. SaveMoreDeals is completely free for shoppers. We earn a small commission from stores when you make a purchase through our links, at absolutely no extra cost to you."
       },
       {
         q: "How can I get notified about the best deals in real time?",
         a: "Join our WhatsApp group to receive instant notifications about the best deals, exclusive coupons, and flash sales — completely free."
       },
     ],
-    communityTitle: "Join our community!",
-    communitySub: "Get the best deals, exclusive coupons, and flash sale alerts directly on your WhatsApp — completely free.",
-    communityBtn: "Join now",
     waJoin: "Join the group",
     waTooltip: "🔔 Get deals on WhatsApp",
     waLink: "https://chat.whatsapp.com/XXXXXX_ENGLISH",
@@ -181,22 +190,41 @@ function applyLang(lang) {
 
   const L = I18N[lang];
 
+  // Page title
+  document.title = L.pageTitle;
+  const pageTitleEl = document.getElementById("pageTitle");
+  if (pageTitleEl) pageTitleEl.textContent = L.pageTitle;
+
+  // Logo images (header + footer)
+  const logoImg = document.getElementById("logoImg");
+  if (logoImg) { logoImg.src = L.logoSrc; logoImg.alt = L.appName; }
+  const footerLogoImg = document.getElementById("footerLogoImg");
+  if (footerLogoImg) { footerLogoImg.src = L.logoSrc; footerLogoImg.alt = L.appName; }
+
+  // textContent
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const v = L[el.dataset.i18n];
     if (typeof v === "string") el.textContent = v;
   });
+  // innerHTML
   document.querySelectorAll("[data-i18n-html]").forEach(el => {
     const v = L[el.dataset.i18nHtml];
     if (typeof v === "string") el.innerHTML = v;
   });
+
+  // placeholder
   document.querySelectorAll("[data-i18n-ph]").forEach(el => {
     const v = L[el.dataset.i18nPh];
     if (typeof v === "string") el.placeholder = v;
   });
+
+  // href (WhatsApp)
   document.querySelectorAll("[data-i18n-href]").forEach(el => {
     const v = L[el.dataset.i18nHref];
     if (typeof v === "string") el.href = v;
   });
+
+  // title/tooltip
   document.querySelectorAll("[data-i18n-title]").forEach(el => {
     const v = L[el.dataset.i18nTitle];
     if (typeof v === "string") el.title = v;
@@ -205,11 +233,6 @@ function applyLang(lang) {
   // Active lang button
   document.querySelectorAll(".lang-btn").forEach(btn =>
     btn.classList.toggle("active", btn.dataset.lang === lang)
-  );
-
-  // Hero banner images: show the one matching the current language
-  document.querySelectorAll("[data-lang-show]").forEach(el =>
-    el.classList.toggle("active", el.dataset.langShow === lang)
   );
 
   renderHowItWorks();
@@ -320,17 +343,17 @@ function normalizeRow(row) {
     return "";
   };
 
-  const url        = get("url", "link", "enlace");
-  const titulo     = get("titulo", "title", "nombre", "producto");
-  const imagen     = get("imagen", "image", "img", "foto");
-  const precioStr  = get("precio", "price", "precio_actual");
-  const antStr     = get("precio_anterior", "precio_original", "original_price", "antes");
-  const categoria  = (get("categoria", "category", "cat").toLowerCase()) || "otros";
-  const badge      = get("badge", "etiqueta").toLowerCase();
-  const activo     = get("activo", "active", "visible");
-  const expiresH   = get("expira_en", "expires_in", "expira", "horas");
-  const notas      = get("notas", "notes", "descripcion", "description", "desc");
-  const cupon      = get("cupon", "cupón", "coupon", "codigo", "code");
+  const url = get("url", "link", "enlace");
+  const titulo = get("titulo", "title", "nombre", "producto");
+  const imagen = get("imagen", "image", "img", "foto");
+  const precioStr = get("precio", "price", "precio_actual");
+  const antStr = get("precio_anterior", "precio_original", "original_price", "antes");
+  const categoria = (get("categoria", "category", "cat").toLowerCase()) || "otros";
+  const badge = get("badge", "etiqueta").toLowerCase();
+  const activo = get("activo", "active", "visible");
+  const expiresH = get("expira_en", "expires_in", "expira", "horas");
+  const notas = get("notas", "notes", "descripcion", "description", "desc");
+  const cupon = get("cupon", "cupón", "coupon", "codigo", "code");
   // ── NEW: expiry date/time for coupon ──
   const expCuponStr = get("expira_cupon", "coupon_expires", "cupon_expira", "expira_codigo");
 
@@ -339,8 +362,8 @@ function normalizeRow(row) {
     ? !["no", "false", "0", "inactivo"].includes(activo.toLowerCase()) : true;
   if (!isActive) return null;
 
-  const precio    = parseFloat(precioStr.replace(/[$,]/g, "")) || 0;
-  const anterior  = parseFloat(antStr.replace(/[$,]/g, ""))    || 0;
+  const precio = parseFloat(precioStr.replace(/[$,]/g, "")) || 0;
+  const anterior = parseFloat(antStr.replace(/[$,]/g, "")) || 0;
   const descuento = (anterior > precio && precio > 0)
     ? Math.round(((anterior - precio) / anterior) * 100) : 0;
 
@@ -361,6 +384,7 @@ function normalizeRow(row) {
     cupon, cuponExpiresAt,
   };
 }
+
 
 /* ── COPY COUPON (global — called via onclick inside innerHTML) */
 window.copyDealCoupon = function (e, code) {
@@ -412,18 +436,18 @@ const SCISSORS_SVG = `<svg class="scissors-icon" viewBox="0 0 24 24" fill="none"
 function buildCard(deal, index) {
   const L = I18N[currentLang];
   const badgeLabel = L.badgeLabels[deal.badge];
-  const badgeCss   = BADGE_CSS[deal.badge];
-  const catIcon    = CAT_ICONS[deal.categoria] || "📦";
-  const catLabel   = deal.categoria.charAt(0).toUpperCase() + deal.categoria.slice(1);
+  const badgeCss = BADGE_CSS[deal.badge];
+  const catIcon = CAT_ICONS[deal.categoria] || "📦";
+  const catLabel = deal.categoria.charAt(0).toUpperCase() + deal.categoria.slice(1);
 
   /* Price row */
   const priceHtml = deal.precio > 0
     ? `<div class="card-price-row">
          <span class="price-cur">$${deal.precio.toFixed(2)}</span>
          ${deal.anterior > deal.precio
-           ? `<span class="price-was">$${deal.anterior.toFixed(2)}</span>
+      ? `<span class="price-was">$${deal.anterior.toFixed(2)}</span>
               <span class="price-off">-${deal.descuento}%</span>`
-           : ""}
+      : ""}
        </div>`
     : `<div class="card-price-row"><span class="price-see">${t("seePrice")}</span></div>`;
 
@@ -501,7 +525,7 @@ function buildCard(deal, index) {
   card.innerHTML = `
     <div class="card-img-wrap">
       ${deal.badge && badgeCss
-        ? `<span class="card-badge ${badgeCss}">${badgeLabel}</span>` : ""}
+      ? `<span class="card-badge ${badgeCss}">${badgeLabel}</span>` : ""}
       <img class="card-img" src="${imgSrc}" alt="${titulo}" loading="lazy"
            onerror="this.src='https://placehold.co/400x400/021e47/444?text=${encodeURIComponent(emoji)}'" />
       <div class="card-img-overlay"><span>${t("seeOffer").replace("🛒 ", "")}</span></div>
@@ -527,7 +551,7 @@ function startCouponTimers() {
   setInterval(() => {
     document.querySelectorAll(".coupon-countdown[data-expires]").forEach(el => {
       const exp = new Date(el.dataset.expires);
-      const ms  = exp - Date.now();
+      const ms = exp - Date.now();
 
       if (ms <= 0) {
         el.textContent = t("couponExpired");
@@ -712,7 +736,7 @@ function renderDeals() {
 /* ── INIT ────────────────────────────────────────────────── */
 async function init() {
   const status = document.getElementById("statusMsg");
-  const grid   = document.getElementById("dealsGrid");
+  const grid = document.getElementById("dealsGrid");
 
   grid.innerHTML = Array(6).fill('<div class="skeleton"></div>').join("");
 

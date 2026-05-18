@@ -1,9 +1,9 @@
 /* ── VARIABLES ── */
 :root {
   /* ── Background layers (dark navy) ── */
-  --bg: #08080f;
-  --surface: #10101c;
-  --surface2: #181828;
+  --bg: #011C3F;
+  --surface: #021e47;
+  --surface2: #042258;
 
   /* ── Borders ── */
   --border: rgba(255, 255, 255, .07);

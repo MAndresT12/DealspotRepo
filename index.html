@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DealSpot — Las Mejores Ofertas</title>
+  <meta name="description" content="Las mejores ofertas y descuentos del día en tecnología, hogar, gaming y más." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="/" class="logo">⚡ Deal<span>Spot</span></a>
+      <div class="header-search">
+        <input type="search" id="searchInput" placeholder="🔍 Buscar ofertas…" />
+      </div>
+      <button class="menu-btn" id="menuBtn">☰</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <p class="hero-badge">🟢 Actualizado automáticamente · <strong id="totalCount">…</strong> ofertas</p>
+        <h1>Las mejores<br/><span>ofertas del día</span></h1>
+        <p class="hero-sub">Deals verificados en tecnología, gaming, hogar y más. Redirige directo a la tienda.</p>
+      </div>
+    </section>
+
+    <!-- DISCLOSURE -->
+    <div class="disclosure">
+      <div class="container">
+        ℹ️ <strong>Aviso:</strong> Este sitio contiene enlaces de afiliados. Podemos ganar una comisión si compras a través de nuestros links, sin costo adicional para ti.
+      </div>
+    </div>
+
+    <!-- CATEGORÍAS -->
+    <div class="cats-wrap">
+      <div class="container">
+        <div class="cats" id="cats">
+          <button class="cat active" data-cat="all">🌟 Todos</button>
+          <button class="cat" data-cat="tecnologia">💻 Tecnología</button>
+          <button class="cat" data-cat="gaming">🎮 Gaming</button>
+          <button class="cat" data-cat="hogar">🏠 Hogar</button>
+          <button class="cat" data-cat="moda">👗 Moda</button>
+          <button class="cat" data-cat="deportes">⚽ Deportes</button>
+          <button class="cat" data-cat="belleza">💄 Belleza</button>
+          <button class="cat" data-cat="otros">📦 Otros</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEALS GRID -->
+    <section class="container section-main">
+      <div class="section-hdr">
+        <h2>🔥 Todas las Ofertas</h2>
+        <span id="countLabel" class="count-label"></span>
+      </div>
+      <!-- Estado de carga -->
+      <div id="statusMsg" class="status-msg">
+        <div class="spinner"></div>
+        Cargando ofertas desde Google Sheets…
+      </div>
+      <!-- Grid de cards -->
+      <div class="grid" id="dealsGrid"></div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>⚡ <strong>DealSpot</strong> — Sitio de afiliados. Los precios pueden variar al momento de la compra.</p>
+      <p style="margin-top:.5rem; font-size:.75rem; opacity:.6">
+        Participamos en el Programa de Afiliados de Amazon Services LLC y otros programas de afiliados.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

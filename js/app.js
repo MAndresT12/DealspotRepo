@@ -11,7 +11,7 @@
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-cKq84KXQEvTuI8Ep7bRM-dAY5OaGTYZbYqBEtFTK5QI2EQV66buYJHbXrgcpgtQTbwn9Kbfzu7eC/pub?gid=1330817725&single=true&output=csv";
 const CACHE_KEY = "ds_sheet_v3";
 // const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
-const CACHE_TTL = 0 * 60 * 1000; // 0 PARA DESARROLLO (sin cache)
+const CACHE_TTL = 1 * 60 * 1000; // 1 min PARA DESARROLLO (sin cache)
 
 const STORE_LABELS = {
   "amazon.com": "Amazon",
@@ -197,7 +197,7 @@ function buildCard(deal, index) {
       <h3 class="card-title">${titulo}</h3>
       ${deal.notas ? `<p class="card-desc">${deal.notas}</p>` : ""}
       ${priceHtml}
-      ${timerHtml}
+      <!-- ${timerHtml} -->
       <span class="card-cta">🛒 Ver oferta →</span>
     </div>`;
 

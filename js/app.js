@@ -11,7 +11,7 @@
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-cKq84KXQEvTuI8Ep7bRM-dAY5OaGTYZbYqBEtFTK5QI2EQV66buYJHbXrgcpgtQTbwn9Kbfzu7eC/pub?gid=1330817725&single=true&output=csv";
 const CACHE_KEY = "ds_sheet_v3";
 // const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
-const CACHE_TTL = 0; // 0
+const CACHE_TTL = 0 * 60 * 1000; // 0 PARA DESARROLLO (sin cache)
 
 const STORE_LABELS = {
   "amazon.com": "Amazon",
@@ -70,33 +70,22 @@ function parseCSV(text) {
   });
 }
 
-//Con cache
-// async function fetchSheet() {
-//   try {
-//     const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
-//     if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
-//   } catch { }
-
-//   const res = await fetch(CSV_URL);
-//   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-//   const text = await res.text();
-
-//   if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
-
-//   const data = parseCSV(text);
-//   try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
-//   return data;
-// }
-
-//Sin cache (para desarrollo) se comenta la parte de cache para evitar problemas con datos antiguos durante el desarrollo. Para producción, es recomendable usar cache.
 async function fetchSheet() {
-  const res = await fetch(CSV_URL + "&t=" + Date.now()); // cache-buster
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
+    if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
+  } catch { }
+
+  const res = await fetch(CSV_URL);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const text = await res.text();
-  if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
-  return parseCSV(text);
-}
 
+  if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
+
+  const data = parseCSV(text);
+  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
+  return data;
+}
 
 /* ── NORMALIZAR FILA → DEAL ──────────────────────────────── */
 function detectStore(url) {
@@ -208,7 +197,7 @@ function buildCard(deal, index) {
       <h3 class="card-title">${titulo}</h3>
       ${deal.notas ? `<p class="card-desc">${deal.notas}</p>` : ""}
       ${priceHtml}
-      <!-- ${timerHtml} -->
+      ${timerHtml}
       <span class="card-cta">🛒 Ver oferta →</span>
     </div>`;
 

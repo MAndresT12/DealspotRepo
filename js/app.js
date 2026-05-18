@@ -88,7 +88,7 @@ function parseCSV(text) {
 //   return data;
 // }
 
-//Sin cache (para desarrollo)
+//Sin cache (para desarrollo) se comenta la parte de cache para evitar problemas con datos antiguos durante el desarrollo. Para producción, es recomendable usar cache.
 async function fetchSheet() {
   const res = await fetch(CSV_URL + "&t=" + Date.now()); // cache-buster
   if (!res.ok) throw new Error(`HTTP ${res.status}`);

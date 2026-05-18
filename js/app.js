@@ -8,7 +8,7 @@
 "use strict";
 
 /* ── ÚNICA LÍNEA QUE NECESITAS CAMBIAR SI CAMBIAS DE SHEET ── */
-const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ8hE6fR1IwucZ2G4tnRXGbFiTLjzkD6IoApuQAO0rzjTPXCv6FbYvOnjy8sZzaVES2_Ue4LZk1ZjLf/pub?gid=1235448459&single=true&output=csv";
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-cKq84KXQEvTuI8Ep7bRM-dAY5OaGTYZbYqBEtFTK5QI2EQV66buYJHbXrgcpgtQTbwn9Kbfzu7eC/pub?gid=1330817725&single=true&output=csv";
 
 const CACHE_KEY = "ds_sheet_v3";
 const CACHE_TTL = 30 * 60 * 1000; // 30 minutos

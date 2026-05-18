@@ -88,7 +88,7 @@ const I18N = {
     /* WhatsApp */
     waJoin: "Únete al grupo",
     waTooltip: "🔔 Recibe ofertas en WhatsApp",
-    waLink: "https://chat.whatsapp.com/XXXXXX_ESPANOL",
+    waLink: "https://chat.whatsapp.com/CLKfQbMMrex9Y08zjysw2d",
     /* Footer */
     footerText: "Sitio de afiliados. Los precios pueden variar al momento de la compra.",
     footerSub: "Participamos en el Programa de Afiliados de Amazon Services LLC y otros programas de afiliados.",
@@ -100,9 +100,9 @@ const I18N = {
   },
 
   en: {
-    appName: "SaveMoreDeals",
+    appName: "SaveMoreUSADeals",
     logoSrc: "images/logo-en.png",
-    pageTitle: "SaveMoreDeals — Best Deals of the Day",
+    pageTitle: "SaveMoreUSADeals — Best Deals of the Day",
     searchPlaceholder: "🔍 Search deals…",
     heroBadge: "🟢 Auto-updated · ",
     heroDeals: "deals",
@@ -136,7 +136,7 @@ const I18N = {
     nextPage: "Next →",
     pageOf: (p, t) => `Page ${p} of ${t}`,
     howEyebrow: "Quick guide",
-    howTitle: "How does SaveMoreDeals work?",
+    howTitle: "How does SaveMoreUSADeals work?",
     howItems: [
       {
         q: "What are coupon codes?",
@@ -152,7 +152,7 @@ const I18N = {
       },
       {
         q: "Does this site charge anything?",
-        a: "No. SaveMoreDeals is completely free for shoppers. We earn a small commission from stores when you make a purchase through our links, at absolutely no extra cost to you."
+        a: "No. SaveMoreUSADeals is completely free for shoppers. We earn a small commission from stores when you make a purchase through our links, at absolutely no extra cost to you."
       },
       {
         q: "How can I get notified about the best deals in real time?",
@@ -164,7 +164,7 @@ const I18N = {
     communityBtn: "Join now",
     waJoin: "Join the group",
     waTooltip: "🔔 Get deals on WhatsApp",
-    waLink: "https://chat.whatsapp.com/XXXXXX_ENGLISH",
+    waLink: "https://chat.whatsapp.com/BbbW4zDK83gHx1fDcFOfFp",
     footerText: "Affiliate site. Prices may vary at the time of purchase.",
     footerSub: "We participate in the Amazon Services LLC Associates Program and other affiliate programs.",
     storeLabel: "Store",

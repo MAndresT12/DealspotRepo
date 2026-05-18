@@ -1,292 +1,119 @@
 /* =========================================================
-   DealSpot — app.js  (versión con i18n, paginación, cupones)
+   DealSpot — app.js
 
-   Para cambiar el Google Sheet:
+   Para cambiar el Google Sheet en el futuro:
    1. Archivo → Compartir → Publicar en la web → CSV → Publicar
-   2. Copia la URL y pégala en CSV_URL abajo
+   2. Copia la URL que te da Google y pégala en CSV_URL abajo
    ========================================================= */
 "use strict";
 
-/* ── CONFIG ─────────────────────────────────────────────── */
+/* ── ÚNICA LÍNEA QUE NECESITAS CAMBIAR SI CAMBIAS DE SHEET ── */
 const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ-cKq84KXQEvTuI8Ep7bRM-dAY5OaGTYZbYqBEtFTK5QI2EQV66buYJHbXrgcpgtQTbwn9Kbfzu7eC/pub?gid=1330817725&single=true&output=csv";
-const DEALS_PER_PAGE = 12;
+const CACHE_KEY = "ds_sheet_v3";
+// const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
+const CACHE_TTL = 0 * 60 * 1000; // 0 minutos PARA DESARROLLO (sin cache)
 
-/* ── i18n ────────────────────────────────────────────────── */
-const I18N = {
-  es: {
-    /* Header */
-    searchPlaceholder: "🔍 Buscar ofertas…",
-    /* Hero */
-    heroBadge: "🟢 Actualizado automáticamente · ",
-    heroDeals: "ofertas",
-    heroH1: 'Las mejores<br/><span class="hero-h1-accent">ofertas del día</span>',
-    heroSub: "Deals verificados en tecnología, gaming, hogar y más. Redirige directo a la tienda.",
-    heroSearch: "🔍 Buscar entre todas las ofertas…",
-    /* Disclosure */
-    disclosureText: 'ℹ️ <strong>Aviso:</strong> Este sitio contiene enlaces de afiliados. Podemos ganar una comisión si compras a través de nuestros links, sin costo adicional para ti.',
-    /* Cats */
-    catAll: "🌟 Todos",
-    catTec: "💻 Tecnología",
-    catGaming: "🎮 Gaming",
-    catHogar: "🏠 Hogar",
-    catModa: "👗 Moda",
-    catDeportes: "⚽ Deportes",
-    catBelleza: "💄 Belleza",
-    catOtros: "📦 Otros",
-    /* Section */
-    sectionTitle: "🔥 Todas las Ofertas",
-    loading: "Cargando ofertas desde Google Sheets…",
-    /* Cards */
-    seeOffer: "🛒 Ver oferta →",
-    seePrice: "Ver precio →",
-    couponLabel: "Cupón",
-    copyBtn: "Copiar",
-    copied: "✓ Copiado",
-    noResults: "Sin resultados",
-    noResultsSub: "Prueba con otra categoría o búsqueda.",
-    remainH: "h restantes",
-    remainD: "d restantes",
-    dealCount: n => `${n} oferta${n !== 1 ? "s" : ""}`,
-    /* Pagination */
-    prevPage: "← Anterior",
-    nextPage: "Siguiente →",
-    pageOf: (p, t) => `Página ${p} de ${t}`,
-    /* How it works */
-    howEyebrow: "Guía rápida",
-    howTitle: "¿Cómo funciona DealSpot?",
-    howItems: [
-      {
-        q: "¿Qué son los cupones de descuento?",
-        a: "Los cupones son códigos especiales que ingresas al momento del pago en la tienda para obtener un precio reducido. Están disponibles por tiempo limitado, ¡así que aprovéchalos antes de que expiren!"
-      },
-      {
-        q: "¿Cómo uso un cupón?",
-        a: 'Haz clic en "Ver oferta" para ir a la tienda, agrega el producto al carrito y en el paso de pago pega el código del cupón. El descuento se aplicará automáticamente sobre el total.'
-      },
-      {
-        q: "¿Con qué frecuencia se actualizan las ofertas?",
-        a: "Actualizamos las ofertas regularmente. Sin embargo, los precios pueden cambiar en la tienda sin aviso previo. Siempre verifica el precio final antes de completar tu compra."
-      },
-      {
-        q: "¿Este sitio cobra algo por usarlo?",
-        a: "No. DealSpot es completamente gratuito para los compradores. Ganamos una pequeña comisión de las tiendas cuando realizas una compra a través de nuestros links, sin ningún costo extra para ti."
-      },
-      {
-        q: "¿Cómo recibo notificaciones de las mejores ofertas?",
-        a: "Únete a nuestro grupo de WhatsApp para recibir notificaciones instantáneas de las mejores deals, cupones exclusivos y ofertas flash — totalmente gratis."
-      },
-    ],
-    /* WhatsApp — ⚠️ REEMPLAZA con tu link real en español */
-    waJoin: "Únete al grupo",
-    waTooltip: "🔔 Recibe ofertas en WhatsApp",
-    waLink: "https://chat.whatsapp.com/XXXXXX_ESPANOL",
-    /* Footer */
-    footerText: "Sitio de afiliados. Los precios pueden variar al momento de la compra.",
-    footerSub: "Participamos en el Programa de Afiliados de Amazon Services LLC y otros programas de afiliados.",
-    /* Misc */
-    storeLabel: "Tienda",
-    errorTitle: "Error al cargar",
-    errorHint: "Verifica que en tu Google Sheet hayas hecho:<br><strong>Archivo → Compartir → Publicar en la web</strong><br>→ Selecciona la hoja → formato CSV → Publicar",
-    badgeLabels: { hot: "🔥 HOT", new: "✨ NUEVO", limited: "⏰ LIMITADO", sale: "💸 OFERTA" },
-  },
-
-  en: {
-    searchPlaceholder: "🔍 Search deals…",
-    heroBadge: "🟢 Auto-updated · ",
-    heroDeals: "deals",
-    heroH1: 'Best deals<br/><span class="hero-h1-accent">of the day</span>',
-    heroSub: "Verified deals on tech, gaming, home & more. Links go straight to the store.",
-    heroSearch: "🔍 Search all deals…",
-    disclosureText: 'ℹ️ <strong>Notice:</strong> This site contains affiliate links. We may earn a commission if you purchase through our links, at no extra cost to you.',
-    catAll: "🌟 All",
-    catTec: "💻 Tech",
-    catGaming: "🎮 Gaming",
-    catHogar: "🏠 Home",
-    catModa: "👗 Fashion",
-    catDeportes: "⚽ Sports",
-    catBelleza: "💄 Beauty",
-    catOtros: "📦 Other",
-    sectionTitle: "🔥 All Deals",
-    loading: "Loading deals from Google Sheets…",
-    seeOffer: "🛒 See deal →",
-    seePrice: "See price →",
-    couponLabel: "Coupon",
-    copyBtn: "Copy",
-    copied: "✓ Copied",
-    noResults: "No results",
-    noResultsSub: "Try a different category or search term.",
-    remainH: "h left",
-    remainD: "d left",
-    dealCount: n => `${n} deal${n !== 1 ? "s" : ""}`,
-    prevPage: "← Prev",
-    nextPage: "Next →",
-    pageOf: (p, t) => `Page ${p} of ${t}`,
-    howEyebrow: "Quick guide",
-    howTitle: "How does DealSpot work?",
-    howItems: [
-      {
-        q: "What are coupon codes?",
-        a: "Coupon codes are special discount codes you enter at checkout to get a reduced price. They are only valid for a limited time — grab them fast before they expire!"
-      },
-      {
-        q: "How do I use a coupon code?",
-        a: 'Click "See deal" to go to the store, add the product to your cart, then paste the coupon code at checkout. The discount will be applied automatically to your order total.'
-      },
-      {
-        q: "How often are deals updated?",
-        a: "We update deals regularly. However, prices can change at the store without notice. Always verify the final price before completing your purchase."
-      },
-      {
-        q: "Does this site charge anything?",
-        a: "No. DealSpot is completely free for shoppers. We earn a small commission from stores when you make a purchase through our links, at absolutely no extra cost to you."
-      },
-      {
-        q: "How can I get notified about the best deals in real time?",
-        a: "Join our WhatsApp group to receive instant notifications about the best deals, exclusive coupons, and flash sales — completely free."
-      },
-    ],
-    /* WhatsApp — ⚠️ REPLACE with your real English-speaking group link */
-    waJoin: "Join the group",
-    waTooltip: "🔔 Get deals on WhatsApp",
-    waLink: "https://chat.whatsapp.com/XXXXXX_ENGLISH",
-    footerText: "Affiliate site. Prices may vary at the time of purchase.",
-    footerSub: "We participate in the Amazon Services LLC Associates Program and other affiliate programs.",
-    storeLabel: "Store",
-    errorTitle: "Error loading",
-    errorHint: "Verify that in your Google Sheet you have done:<br><strong>File → Share → Publish to web</strong><br>→ Select the sheet → CSV format → Publish",
-    badgeLabels: { hot: "🔥 HOT", new: "✨ NEW", limited: "⏰ LIMITED", sale: "💸 SALE" },
-  },
-};
-
-/* ── LANGUAGE STATE ──────────────────────────────────────── */
-let currentLang = detectLang();
-
-function detectLang() {
-  const saved = localStorage.getItem("ds_lang");
-  if (saved && I18N[saved]) return saved;
-  const browser = (navigator.language || "es").toLowerCase();
-  return browser.startsWith("en") ? "en" : "es";
-}
-
-/** Quick translate helper */
-function t(key) {
-  const val = I18N[currentLang][key];
-  return val !== undefined ? val : (I18N["es"][key] ?? key);
-}
-
-/** Apply language to the whole page */
-function applyLang(lang) {
-  if (!I18N[lang]) return;
-  currentLang = lang;
-  localStorage.setItem("ds_lang", lang);
-  document.documentElement.lang = lang;
-
-  const L = I18N[lang];
-
-  // textContent
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const v = L[el.dataset.i18n];
-    if (typeof v === "string") el.textContent = v;
-  });
-  // innerHTML (allows HTML markup)
-  document.querySelectorAll("[data-i18n-html]").forEach(el => {
-    const v = L[el.dataset.i18nHtml];
-    if (typeof v === "string") el.innerHTML = v;
-  });
-  // placeholder
-  document.querySelectorAll("[data-i18n-ph]").forEach(el => {
-    const v = L[el.dataset.i18nPh];
-    if (typeof v === "string") el.placeholder = v;
-  });
-  // href (for WhatsApp link)
-  document.querySelectorAll("[data-i18n-href]").forEach(el => {
-    const v = L[el.dataset.i18nHref];
-    if (typeof v === "string") el.href = v;
-  });
-  // title / tooltip
-  document.querySelectorAll("[data-i18n-title]").forEach(el => {
-    const v = L[el.dataset.i18nTitle];
-    if (typeof v === "string") el.title = v;
-  });
-
-  // Active lang button
-  document.querySelectorAll(".lang-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.dataset.lang === lang);
-  });
-
-  // Dynamic sections
-  renderHowItWorks();
-  if (allDeals.length) renderDeals();
-}
-
-/* ── STORE / CAT / BADGE MAPS ────────────────────────────── */
 const STORE_LABELS = {
-  "amazon.com": "Amazon", "amzn.to": "Amazon", "a.co": "Amazon",
-  "walmart.com": "Walmart", "bestbuy.com": "Best Buy",
-  "aliexpress.com": "AliExpress", "ebay.com": "eBay",
-  "target.com": "Target", "costco.com": "Costco",
+  "amazon.com": "Amazon",
+  "amzn.to": "Amazon",
+  "a.co": "Amazon",
+  "walmart.com": "Walmart",
+  "bestbuy.com": "Best Buy",
+  "aliexpress.com": "AliExpress",
+  "ebay.com": "eBay",
+  "target.com": "Target",
+  "costco.com": "Costco",
 };
 
 const CAT_ICONS = {
   tecnologia: "💻", gaming: "🎮", hogar: "🏠", moda: "👗",
-  deportes: "⚽", belleza: "💄", viajes: "✈️", comida: "🍔", otros: "📦",
+  deportes: "⚽", belleza: "💄", viajes: "✈️", comida: "🍔", otros: "📦"
 };
 
-const BADGE_CSS = {
-  hot: "badge-hot", new: "badge-new", limited: "badge-limited", sale: "badge-sale",
+const BADGES = {
+  hot: { label: "🔥 HOT", css: "badge-hot" },
+  new: { label: "✨ NUEVO", css: "badge-new" },
+  limited: { label: "⏰ LIMITADO", css: "badge-limited" },
+  sale: { label: "💸 OFERTA", css: "badge-sale" },
 };
 
-/* ── HELPERS ─────────────────────────────────────────────── */
+/* ── VALIDAR URL ─────────────────────────────────────────── */
+// FIX #1 — Evita que filas de instrucciones/texto pasen como deals
 function isValidUrl(str) {
   try { return ["http:", "https:"].includes(new URL(str).protocol); }
   catch { return false; }
 }
 
-function detectStore(url) {
-  try {
-    const host = new URL(url).hostname.replace("www.", "");
-    for (const [domain, label] of Object.entries(STORE_LABELS))
-      if (host.includes(domain)) return label;
-  } catch { /* ignore */ }
-  return t("storeLabel");
-}
-
-/* ── CSV PARSER ──────────────────────────────────────────── */
+/* ── PARSEAR CSV ─────────────────────────────────────────── */
 function parseCSV(text) {
+  // FIX #2 — Google Sheets exporta \r\n; split(/\r?\n/) acepta ambos formatos
   const lines = text.trim().split(/\r?\n/);
   if (lines.length < 2) return [];
+
   const headers = lines[0].split(",").map(h =>
     h.replace(/"/g, "").trim().toLowerCase()
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
   );
+
   return lines.slice(1).map(line => {
     const values = [];
-    let inside = false, cur = "";
+    let inside = false, current = "";
     for (const ch of line) {
       if (ch === '"') { inside = !inside; continue; }
-      if (ch === "," && !inside) { values.push(cur.trim()); cur = ""; continue; }
-      cur += ch;
+      if (ch === "," && !inside) { values.push(current.trim()); current = ""; continue; }
+      current += ch;
     }
-    values.push(cur.trim());
+    values.push(current.trim());
     const row = {};
     headers.forEach((h, i) => { row[h] = values[i] || ""; });
     return row;
   });
 }
 
-/* ── FETCH ───────────────────────────────────────────────── */
+//Utilizando cache para evitar llamadas repetidas al Google Sheet durante el desarrollo o en sesiones cortas. El cache se guarda en sessionStorage y se invalida después de CACHE_TTL milisegundos.
+// async function fetchSheet() {
+//   try {
+//     const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
+//     if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
+//   } catch { }
+
+//   const res = await fetch(CSV_URL);
+//   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+//   const text = await res.text();
+
+//   if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
+
+//   const data = parseCSV(text);
+//   try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
+//   return data;
+// }
+
+//Sin cache
 async function fetchSheet() {
-  const res = await fetch(CSV_URL + "&t=" + Date.now());
+  const res = await fetch(CSV_URL + "&t=" + Date.now()); // cache-buster
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const text = await res.text();
   if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
   return parseCSV(text);
 }
 
-/* ── NORMALIZE ROW → DEAL ────────────────────────────────── */
+/* ── NORMALIZAR FILA → DEAL ──────────────────────────────── */
+function detectStore(url) {
+  try {
+    const hostname = new URL(url).hostname.replace("www.", "");
+    for (const [domain, label] of Object.entries(STORE_LABELS)) {
+      if (hostname.includes(domain)) return label;
+    }
+  } catch { }
+  return "Tienda";
+}
+
 function normalizeRow(row) {
   const get = (...keys) => {
-    for (const k of keys) { const v = row[k]; if (v?.trim()) return v.trim(); }
+    for (const k of keys) {
+      const v = row[k];
+      if (v && v.trim()) return v.trim();
+    }
     return "";
   };
 
@@ -295,17 +122,16 @@ function normalizeRow(row) {
   const imagen = get("imagen", "image", "img", "foto");
   const precioStr = get("precio", "price", "precio_actual");
   const antStr = get("precio_anterior", "precio_original", "original_price", "antes");
-  const categoria = (get("categoria", "category", "cat").toLowerCase()) || "otros";
+  const categoria = get("categoria", "category", "cat").toLowerCase() || "otros";
   const badge = get("badge", "etiqueta").toLowerCase();
   const activo = get("activo", "active", "visible");
   const expiresH = get("expira_en", "expires_in", "expira", "horas");
   const notas = get("notas", "notes", "descripcion", "description", "desc");
-  // ── NUEVA columna: cupon ──
-  const cupon = get("cupon", "cupón", "coupon", "codigo", "code");
 
+  // FIX #1 — Valida que la URL sea real (http/https), descarta filas de instrucciones
   if (!url || !isValidUrl(url)) return null;
-  const isActive = activo
-    ? !["no", "false", "0", "inactivo"].includes(activo.toLowerCase()) : true;
+
+  const isActive = activo ? !["no", "false", "0", "inactivo"].includes(activo.toLowerCase()) : true;
   if (!isActive) return null;
 
   const precio = parseFloat(precioStr.replace(/[$,]/g, "")) || 0;
@@ -315,106 +141,47 @@ function normalizeRow(row) {
 
   let expiresAt = null;
   const horas = parseFloat(expiresH);
-  if (horas > 0) expiresAt = new Date(Date.now() + horas * 3_600_000);
+  if (horas > 0) expiresAt = new Date(Date.now() + horas * 3600000);
 
   return {
     url, titulo, imagen, precio, anterior, descuento,
-    categoria: CAT_ICONS[categoria] ? categoria : "otros",
-    badge: BADGE_CSS[badge] ? badge : "",
+    categoria: categoria in CAT_ICONS ? categoria : "otros",
+    badge: badge in BADGES ? badge : "",
     store: detectStore(url),
-    notas, expiresAt, cupon,
+    notas, expiresAt,
   };
 }
 
-/* ── COPY COUPON (global — called via onclick inside innerHTML) */
-window.copyDealCoupon = function (e, code) {
-  e.preventDefault();
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const origHTML = btn.innerHTML;
-
-  const success = () => {
-    btn.textContent = t("copied");
-    btn.classList.add("copied");
-    setTimeout(() => { btn.innerHTML = origHTML; btn.classList.remove("copied"); }, 2000);
-  };
-
-  if (navigator.clipboard?.writeText) {
-    navigator.clipboard.writeText(code).then(success).catch(fallback);
-  } else {
-    fallback();
-  }
-
-  function fallback() {
-    try {
-      const ta = Object.assign(document.createElement("textarea"), {
-        value: code, style: "position:fixed;opacity:0",
-      });
-      document.body.appendChild(ta);
-      ta.focus(); ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      success();
-    } catch { /* silent */ }
-  }
-};
-
-/* ── BUILD CARD ──────────────────────────────────────────── */
+/* ── CONSTRUIR CARD ──────────────────────────────────────── */
 function buildCard(deal, index) {
-  const L = I18N[currentLang];
-  const badgeLabel = L.badgeLabels[deal.badge];
-  const badgeCss = BADGE_CSS[deal.badge];
+  const badgeCfg = BADGES[deal.badge];
   const catIcon = CAT_ICONS[deal.categoria] || "📦";
   const catLabel = deal.categoria.charAt(0).toUpperCase() + deal.categoria.slice(1);
 
-  /* Price row */
   const priceHtml = deal.precio > 0
     ? `<div class="card-price-row">
          <span class="price-cur">$${deal.precio.toFixed(2)}</span>
          ${deal.anterior > deal.precio
       ? `<span class="price-was">$${deal.anterior.toFixed(2)}</span>
-              <span class="price-off">-${deal.descuento}%</span>`
-      : ""}
+              <span class="price-off">-${deal.descuento}%</span>` : ""}
        </div>`
-    : `<div class="card-price-row"><span class="price-see">${t("seePrice")}</span></div>`;
+    : `<div class="card-price-row"><span class="price-see">Ver precio →</span></div>`;
 
-  /* Timer */
   let timerHtml = "";
   if (deal.expiresAt) {
     const diff = deal.expiresAt - Date.now();
     if (diff > 0) {
-      const h = Math.floor(diff / 3_600_000);
-      const m = Math.floor((diff % 3_600_000) / 60_000);
+      const h = Math.floor(diff / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
       timerHtml = `<div class="card-timer${h < 6 ? " urgent" : ""}">
-        ${h < 24 ? `⏰ ${h}h ${m}m ${t("remainH")}` : `📅 ${Math.floor(h / 24)}d ${t("remainD")}`}
+        ${h < 24 ? `⏰ ${h}h ${m}m restantes` : `📅 ${Math.floor(h / 24)}d restantes`}
       </div>`;
     }
   }
 
-  /* Coupon chip */
-  const safeCode = deal.cupon.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-  const couponHtml = deal.cupon
-    ? `<div class="card-coupon">
-         <span class="coupon-label">${t("couponLabel")}:</span>
-         <span class="coupon-code">${deal.cupon}</span>
-         <button class="coupon-copy"
-                 onclick="copyDealCoupon(event,'${safeCode}')"
-                 title="${t("copyBtn")}">
-           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-             <rect x="9" y="9" width="13" height="13" rx="2"/>
-             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-           </svg>
-           ${t("copyBtn")}
-         </button>
-       </div>`
-    : "";
-
   const storeEmoji = { Amazon: "📦", Walmart: "🏪", "Best Buy": "💙", AliExpress: "🛒", eBay: "🔨" };
   const emoji = storeEmoji[deal.store] || "🛍️";
-  const imgSrc = deal.imagen
-    || `https://placehold.co/400x400/10101c/444?text=${encodeURIComponent(emoji)}`;
+  const imgSrc = deal.imagen || `https://placehold.co/400x400/10101c/444?text=${encodeURIComponent(emoji)}`;
   const titulo = deal.titulo || `Oferta en ${deal.store}`;
 
   const card = document.createElement("a");
@@ -427,11 +194,10 @@ function buildCard(deal, index) {
 
   card.innerHTML = `
     <div class="card-img-wrap">
-      ${deal.badge && badgeCss
-      ? `<span class="card-badge ${badgeCss}">${badgeLabel}</span>` : ""}
+      ${badgeCfg ? `<span class="card-badge ${badgeCfg.css}">${badgeCfg.label}</span>` : ""}
       <img class="card-img" src="${imgSrc}" alt="${titulo}" loading="lazy"
            onerror="this.src='https://placehold.co/400x400/10101c/444?text=${encodeURIComponent(emoji)}'" />
-      <div class="card-img-overlay"><span>${t("seeOffer").replace("🛒 ", "")}</span></div>
+      <div class="card-img-overlay"><span>Ver oferta ↗</span></div>
     </div>
     <div class="card-info">
       <div class="card-top">
@@ -441,159 +207,41 @@ function buildCard(deal, index) {
       <h3 class="card-title">${titulo}</h3>
       ${deal.notas ? `<p class="card-desc">${deal.notas}</p>` : ""}
       ${priceHtml}
-      ${couponHtml}
-      ${timerHtml}
-      <span class="card-cta">${t("seeOffer")}</span>
+      <!-- ${timerHtml} -->
+      <span class="card-cta">🛒 Ver oferta →</span>
     </div>`;
 
   return card;
 }
 
-/* ── PAGINATION ──────────────────────────────────────────── */
-let currentPage = 1;
-
-function getPageNumbers(current, total) {
-  const pages = [];
-  let last = 0;
-  for (let i = 1; i <= total; i++) {
-    if (i === 1 || i === total || (i >= current - 1 && i <= current + 1)) {
-      if (last && i - last > 1) pages.push("…");
-      pages.push(i);
-      last = i;
-    }
-  }
-  return pages;
-}
-
-function renderPagination(total) {
-  const pag = document.getElementById("pagination");
-  if (!pag) return;
-  const totalPages = Math.ceil(total / DEALS_PER_PAGE);
-  if (totalPages <= 1) { pag.innerHTML = ""; return; }
-
-  const L = I18N[currentLang];
-  let html = "";
-
-  html += `<button class="pag-btn pag-arrow${currentPage === 1 ? " disabled" : ""}"
-             id="pagPrev" aria-label="${L.prevPage}">${L.prevPage}</button>`;
-
-  getPageNumbers(currentPage, totalPages).forEach(p => {
-    if (p === "…") {
-      html += `<span class="pag-ellipsis">…</span>`;
-    } else {
-      html += `<button class="pag-btn pag-num${p === currentPage ? " active" : ""}"
-                 data-page="${p}" aria-label="Página ${p}">${p}</button>`;
-    }
-  });
-
-  html += `<button class="pag-btn pag-arrow${currentPage === totalPages ? " disabled" : ""}"
-             id="pagNext" aria-label="${L.nextPage}">${L.nextPage}</button>`;
-
-  pag.innerHTML = html;
-
-  if (currentPage > 1)
-    pag.querySelector("#pagPrev")?.addEventListener("click", () => {
-      currentPage--; renderDeals(); scrollToGrid();
-    });
-  if (currentPage < totalPages)
-    pag.querySelector("#pagNext")?.addEventListener("click", () => {
-      currentPage++; renderDeals(); scrollToGrid();
-    });
-  pag.querySelectorAll(".pag-num").forEach(btn =>
-    btn.addEventListener("click", () => {
-      currentPage = parseInt(btn.dataset.page, 10);
-      renderDeals(); scrollToGrid();
-    })
-  );
-}
-
-function scrollToGrid() {
-  document.querySelector(".section-main")?.scrollIntoView({ behavior: "smooth" });
-}
-
-/* ── HOW IT WORKS ────────────────────────────────────────── */
-function renderHowItWorks() {
-  const container = document.getElementById("howAccordion");
-  if (!container) return;
-  const L = I18N[currentLang];
-
-  container.innerHTML = L.howItems.map((item, i) => `
-    <div class="how-item${i === 0 ? " open" : ""}">
-      <button class="how-q" onclick="toggleHow(this)" aria-expanded="${i === 0}">
-        <span class="how-q-num">${String(i + 1).padStart(2, "0")}</span>
-        <span class="how-q-text">${item.q}</span>
-        <svg class="how-chevron" width="18" height="18" viewBox="0 0 24 24"
-             fill="none" stroke="currentColor" stroke-width="2.5"
-             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-      </button>
-      <div class="how-a"><p>${item.a}</p></div>
-    </div>
-  `).join("");
-}
-
-window.toggleHow = function (btn) {
-  const item = btn.closest(".how-item");
-  const isOpen = item.classList.contains("open");
-  document.querySelectorAll(".how-item").forEach(i => {
-    i.classList.remove("open");
-    i.querySelector(".how-q")?.setAttribute("aria-expanded", "false");
-  });
-  if (!isOpen) {
-    item.classList.add("open");
-    btn.setAttribute("aria-expanded", "true");
-  }
-};
-
-/* ── RENDER DEALS ────────────────────────────────────────── */
+/* ── RENDER + FILTROS ────────────────────────────────────── */
 let allDeals = [], currentCat = "all", currentSearch = "";
 
 function renderDeals() {
   const grid = document.getElementById("dealsGrid");
   grid.innerHTML = "";
 
-  /* Filter */
   let filtered = allDeals;
   if (currentCat !== "all")
     filtered = filtered.filter(d => d.categoria === currentCat);
   if (currentSearch)
     filtered = filtered.filter(d =>
-      (d.titulo + d.store + d.categoria + d.notas + d.cupon)
-        .toLowerCase().includes(currentSearch)
+      (d.titulo + d.store + d.categoria + d.notas).toLowerCase().includes(currentSearch)
     );
 
-  /* Count label */
   const label = document.getElementById("countLabel");
-  if (label) {
-    const fn = I18N[currentLang].dealCount;
-    label.textContent = typeof fn === "function" ? fn(filtered.length) : filtered.length;
-  }
+  if (label) label.textContent = `${filtered.length} oferta${filtered.length !== 1 ? "s" : ""}`;
 
-  /* Empty state */
   if (!filtered.length) {
-    grid.innerHTML = `<div class="empty">
-      <div class="empty-icon">🔍</div>
-      <h3>${t("noResults")}</h3>
-      <p>${t("noResultsSub")}</p>
-    </div>`;
-    renderPagination(0);
+    grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div>
+      <h3>Sin resultados</h3>
+      <p style="margin-top:.4rem;font-size:.83rem">Prueba con otra categoría o búsqueda.</p></div>`;
     return;
   }
 
-  /* Clamp page */
-  const totalPages = Math.ceil(filtered.length / DEALS_PER_PAGE);
-  if (currentPage > totalPages) currentPage = totalPages;
-
-  /* Slice for current page */
-  const start = (currentPage - 1) * DEALS_PER_PAGE;
-  const pageList = filtered.slice(start, start + DEALS_PER_PAGE);
-
   const frag = document.createDocumentFragment();
-  pageList.forEach((d, i) => frag.appendChild(buildCard(d, i)));
+  filtered.forEach((d, i) => frag.appendChild(buildCard(d, i)));
   grid.appendChild(frag);
-
-  renderPagination(filtered.length);
 }
 
 /* ── INIT ────────────────────────────────────────────────── */
@@ -601,7 +249,7 @@ async function init() {
   const status = document.getElementById("statusMsg");
   const grid = document.getElementById("dealsGrid");
 
-  grid.innerHTML = Array(6).fill('<div class="skeleton"></div>').join("");
+  grid.innerHTML = Array(6).fill(`<div class="skeleton"></div>`).join("");
 
   try {
     const rows = await fetchSheet();
@@ -615,36 +263,29 @@ async function init() {
 
     renderDeals();
 
-    /* Category buttons */
-    document.querySelectorAll(".cat").forEach(btn =>
+    document.querySelectorAll(".cat").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".cat").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         currentCat = btn.dataset.cat;
-        currentPage = 1;
         renderDeals();
-        scrollToGrid();
-      })
-    );
-
-    /* Search sync helper */
-    const syncSearch = val => {
-      currentSearch = val.trim().toLowerCase();
-      currentPage = 1;
-      renderDeals();
-    };
+        document.querySelector(".section-main")?.scrollIntoView({ behavior: "smooth" });
+      });
+    });
 
     document.getElementById("searchInput")?.addEventListener("input", e => {
-      syncSearch(e.target.value);
+      currentSearch = e.target.value.trim().toLowerCase();
       const hero = document.getElementById("heroSearchInput");
       if (hero) hero.value = e.target.value;
+      renderDeals();
     });
 
     document.getElementById("heroSearchInput")?.addEventListener("input", e => {
-      syncSearch(e.target.value);
-      const hdr = document.getElementById("searchInput");
-      if (hdr) hdr.value = e.target.value;
-      scrollToGrid();
+      currentSearch = e.target.value.trim().toLowerCase();
+      const header = document.getElementById("searchInput");
+      if (header) header.value = e.target.value;
+      renderDeals();
+      document.querySelector(".section-main")?.scrollIntoView({ behavior: "smooth" });
     });
 
     document.getElementById("menuBtn")?.addEventListener("click", () => {
@@ -657,21 +298,13 @@ async function init() {
     grid.innerHTML = "";
     status.className = "status-msg error";
     status.innerHTML = `
-      ❌ <strong>${t("errorTitle")}: ${err.message}</strong><br>
-      <small style="display:block;margin-top:.5rem;line-height:1.8">${t("errorHint")}</small>`;
+      ❌ <strong>Error al cargar: ${err.message}</strong><br>
+      <small style="display:block;margin-top:.5rem;line-height:1.8">
+        Verifica que en tu Google Sheet hayas hecho:<br>
+        <strong>Archivo → Compartir → Publicar en la web</strong><br>
+        → Selecciona la hoja "Deals" → formato CSV → Publicar
+      </small>`;
   }
 }
 
-/* ── BOOT ────────────────────────────────────────────────── */
-document.addEventListener("DOMContentLoaded", () => {
-  /* Language switcher buttons */
-  document.querySelectorAll(".lang-btn").forEach(btn =>
-    btn.addEventListener("click", () => applyLang(btn.dataset.lang))
-  );
-
-  /* Apply detected language (texts, how-it-works, WA link, etc.) */
-  applyLang(currentLang);
-
-  /* Load data */
-  init();
-});
+document.addEventListener("DOMContentLoaded", init);

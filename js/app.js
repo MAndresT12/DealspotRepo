@@ -70,21 +70,31 @@ function parseCSV(text) {
   });
 }
 
-async function fetchSheet() {
-  try {
-    const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
-    if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
-  } catch { }
+//Utilizando cache para evitar llamadas repetidas al Google Sheet durante el desarrollo o en sesiones cortas. El cache se guarda en sessionStorage y se invalida después de CACHE_TTL milisegundos.
+// async function fetchSheet() {
+//   try {
+//     const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
+//     if (cached && Date.now() - cached.ts < CACHE_TTL) return cached.data;
+//   } catch { }
 
-  const res = await fetch(CSV_URL);
+//   const res = await fetch(CSV_URL);
+//   if (!res.ok) throw new Error(`HTTP ${res.status}`);
+//   const text = await res.text();
+
+//   if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
+
+//   const data = parseCSV(text);
+//   try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
+//   return data;
+// }
+
+//Sin cache
+async function fetchSheet() {
+  const res = await fetch(CSV_URL + "&t=" + Date.now()); // cache-buster
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const text = await res.text();
-
   if (text.trim().startsWith("<")) throw new Error("SHEET_NOT_PUBLISHED");
-
-  const data = parseCSV(text);
-  try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch { }
-  return data;
+  return parseCSV(text);
 }
 
 /* ── NORMALIZAR FILA → DEAL ──────────────────────────────── */

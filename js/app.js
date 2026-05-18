@@ -275,7 +275,17 @@ async function init() {
 
     document.getElementById("searchInput")?.addEventListener("input", e => {
       currentSearch = e.target.value.trim().toLowerCase();
+      const hero = document.getElementById("heroSearchInput");
+      if (hero) hero.value = e.target.value;
       renderDeals();
+    });
+
+    document.getElementById("heroSearchInput")?.addEventListener("input", e => {
+      currentSearch = e.target.value.trim().toLowerCase();
+      const header = document.getElementById("searchInput");
+      if (header) header.value = e.target.value;
+      renderDeals();
+      document.querySelector(".section-main")?.scrollIntoView({ behavior: "smooth" });
     });
 
     document.getElementById("menuBtn")?.addEventListener("click", () => {

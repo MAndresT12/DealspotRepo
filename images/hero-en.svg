@@ -1,0 +1,113 @@
+<svg viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#011C3F"/>
+      <stop offset="60%" stop-color="#021e45"/>
+      <stop offset="100%" stop-color="#032260"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D11A1E"/>
+      <stop offset="100%" stop-color="#ff3a3e"/>
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#84C11B"/>
+      <stop offset="100%" stop-color="#9dd622"/>
+    </linearGradient>
+    <clipPath id="roundedRect">
+      <rect width="1200" height="320" rx="20"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="320" fill="url(#bgGrad)" rx="20"/>
+
+  <!-- Decorative blobs -->
+  <circle cx="950" cy="160" r="220" fill="#02A0F4" opacity="0.07"/>
+  <circle cx="1150" cy="40" r="130" fill="#84C11B" opacity="0.06"/>
+  <circle cx="1050" cy="300" r="100" fill="#D11A1E" opacity="0.08"/>
+  <circle cx="200" cy="280" r="140" fill="#FDD513" opacity="0.04"/>
+
+  <!-- Grid lines decoration -->
+  <line x1="0" y1="80" x2="1200" y2="80" stroke="#FEFEFE" stroke-opacity="0.03" stroke-width="1"/>
+  <line x1="0" y1="160" x2="1200" y2="160" stroke="#FEFEFE" stroke-opacity="0.03" stroke-width="1"/>
+  <line x1="0" y1="240" x2="1200" y2="240" stroke="#FEFEFE" stroke-opacity="0.03" stroke-width="1"/>
+  <line x1="300" y1="0" x2="300" y2="320" stroke="#FEFEFE" stroke-opacity="0.025" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="320" stroke="#FEFEFE" stroke-opacity="0.025" stroke-width="1"/>
+  <line x1="900" y1="0" x2="900" y2="320" stroke="#FEFEFE" stroke-opacity="0.025" stroke-width="1"/>
+
+  <!-- Blue accent bar left -->
+  <rect x="0" y="0" width="6" height="320" fill="url(#accentGrad)" rx="0"/>
+
+  <!-- Logo mark -->
+  <polygon points="110,52 95,78 107,78 104,108 119,82 107,82" fill="#D11A1E"/>
+  <text x="128" y="82" fill="#FEFEFE" font-family="'Syne', sans-serif" font-size="32" font-weight="800" letter-spacing="-1">Deal<tspan fill="#D11A1E">Spot</tspan></text>
+
+  <!-- Separator -->
+  <rect x="88" y="100" width="340" height="2" fill="#02A0F4" opacity="0.5" rx="1"/>
+
+  <!-- Main headline -->
+  <text x="88" y="148" fill="#FEFEFE" font-family="sans-serif" font-size="36" font-weight="800" letter-spacing="-0.5">Best deals</text>
+  <text x="88" y="195" fill="#FDD513" font-family="sans-serif" font-size="40" font-weight="800" letter-spacing="-1">of the day 🔥</text>
+
+  <!-- Sub text -->
+  <text x="88" y="234" fill="#a8c4d8" font-family="sans-serif" font-size="15">Verified deals · No extra cost · Links straight to the store</text>
+
+  <!-- Tags row -->
+  <rect x="88" y="258" width="76" height="28" rx="14" fill="#D11A1E" opacity="0.9"/>
+  <text x="126" y="277" fill="#FEFEFE" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">💻 Tech</text>
+
+  <rect x="174" y="258" width="74" height="28" rx="14" fill="#84C11B" opacity="0.9"/>
+  <text x="211" y="277" fill="#011C3F" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">🎮 Gaming</text>
+
+  <rect x="258" y="258" width="68" height="28" rx="14" fill="#02A0F4" opacity="0.9"/>
+  <text x="292" y="277" fill="#FEFEFE" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">🏠 Home</text>
+
+  <rect x="336" y="258" width="80" height="28" rx="14" fill="#FDD513" opacity="0.9"/>
+  <text x="376" y="277" fill="#011C3F" font-family="sans-serif" font-size="12" font-weight="700" text-anchor="middle">👗 Fashion</text>
+
+  <!-- Right side deal cards -->
+  <!-- Card 1 -->
+  <rect x="660" y="30" width="160" height="190" rx="14" fill="#FEFEFE" opacity="0.05" stroke="#FEFEFE" stroke-opacity="0.1" stroke-width="1"/>
+  <rect x="660" y="30" width="160" height="100" rx="14" fill="#FEFEFE" opacity="0.04"/>
+  <text x="740" y="95" font-size="40" text-anchor="middle" font-family="sans-serif">💻</text>
+  <rect x="668" y="38" width="38" height="18" rx="9" fill="#D11A1E"/>
+  <text x="687" y="51" fill="#FEFEFE" font-family="sans-serif" font-size="9" font-weight="700" text-anchor="middle">🔥 HOT</text>
+  <text x="675" y="152" fill="#84C11B" font-family="sans-serif" font-size="22" font-weight="800">$189</text>
+  <text x="720" y="152" fill="#a8c4d8" font-family="sans-serif" font-size="13" text-decoration="line-through">$249</text>
+  <rect x="750" y="138" width="40" height="18" rx="5" fill="#D11A1E" opacity="0.2"/>
+  <text x="770" y="151" fill="#D11A1E" font-family="sans-serif" font-size="10" font-weight="700" text-anchor="middle">-24%</text>
+  <text x="675" y="172" fill="#FEFEFE" font-family="sans-serif" font-size="11" opacity="0.8">AirPods Pro</text>
+  <rect x="668" y="182" width="144" height="28" rx="8" fill="#D11A1E"/>
+  <text x="740" y="201" fill="#FEFEFE" font-family="sans-serif" font-size="11" font-weight="600" text-anchor="middle">🛒 See deal →</text>
+
+  <!-- Card 2 -->
+  <rect x="840" y="50" width="155" height="185" rx="14" fill="#FEFEFE" opacity="0.05" stroke="#FEFEFE" stroke-opacity="0.1" stroke-width="1"/>
+  <rect x="840" y="50" width="155" height="95" rx="14" fill="#FEFEFE" opacity="0.04"/>
+  <text x="918" y="113" font-size="38" text-anchor="middle" font-family="sans-serif">🎮</text>
+  <rect x="848" y="58" width="54" height="18" rx="9" fill="#FDD513"/>
+  <text x="875" y="71" fill="#011C3F" font-family="sans-serif" font-size="9" font-weight="700" text-anchor="middle">⏰ LIMITED</text>
+  <text x="855" y="168" fill="#84C11B" font-family="sans-serif" font-size="22" font-weight="800">$429</text>
+  <text x="900" y="168" fill="#a8c4d8" font-family="sans-serif" font-size="13" text-decoration="line-through">$549</text>
+  <text x="855" y="188" fill="#FEFEFE" font-family="sans-serif" font-size="11" opacity="0.8">PlayStation 5</text>
+  <rect x="848" y="198" width="139" height="28" rx="8" fill="#D11A1E"/>
+  <text x="917" y="217" fill="#FEFEFE" font-family="sans-serif" font-size="11" font-weight="600" text-anchor="middle">🛒 See deal →</text>
+
+  <!-- Card 3 -->
+  <rect x="1015" y="40" width="155" height="185" rx="14" fill="#FEFEFE" opacity="0.05" stroke="#FEFEFE" stroke-opacity="0.1" stroke-width="1"/>
+  <rect x="1015" y="40" width="155" height="95" rx="14" fill="#FEFEFE" opacity="0.04"/>
+  <text x="1092" y="103" font-size="38" text-anchor="middle" font-family="sans-serif">🤖</text>
+  <rect x="1023" y="48" width="40" height="18" rx="9" fill="#84C11B"/>
+  <text x="1043" y="61" fill="#011C3F" font-family="sans-serif" font-size="9" font-weight="700" text-anchor="middle">💸 SALE</text>
+  <text x="1028" y="158" fill="#84C11B" font-family="sans-serif" font-size="22" font-weight="800">$299</text>
+  <text x="1073" y="158" fill="#a8c4d8" font-family="sans-serif" font-size="13" text-decoration="line-through">$499</text>
+  <text x="1028" y="178" fill="#FEFEFE" font-family="sans-serif" font-size="11" opacity="0.8">Robot Vacuum</text>
+  <rect x="1023" y="188" width="139" height="28" rx="8" fill="#D11A1E"/>
+  <text x="1092" y="207" fill="#FEFEFE" font-family="sans-serif" font-size="11" font-weight="600" text-anchor="middle">🛒 See deal →</text>
+
+  <!-- Floating coupon tag -->
+  <rect x="612" y="260" width="130" height="36" rx="18" fill="#FDD513" opacity="0.12" stroke="#FDD513" stroke-opacity="0.3" stroke-width="1"/>
+  <text x="677" y="283" fill="#FDD513" font-family="sans-serif" font-size="13" font-weight="700" text-anchor="middle">✂️ Free coupons</text>
+
+  <!-- Bottom green bar -->
+  <rect x="0" y="308" width="1200" height="12" fill="url(#greenGrad)" rx="0" opacity="0.6"/>
+</svg>

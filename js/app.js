@@ -273,6 +273,18 @@ const CAT_ICONS = {
   deportes: "⚽", belleza: "💄", viajes: "✈️", comida: "🍔", otros: "📦",
 };
 
+/* Traducción de categorías por idioma */
+const CAT_LABELS = {
+  es: {
+    tecnologia: "Tecnología", gaming: "Gaming", hogar: "Hogar", moda: "Moda",
+    deportes: "Deportes", belleza: "Belleza", viajes: "Viajes", comida: "Comida", otros: "Otros",
+  },
+  en: {
+    tecnologia: "Tech", gaming: "Gaming", hogar: "Home", moda: "Fashion",
+    deportes: "Sports", belleza: "Beauty", viajes: "Travel", comida: "Food", otros: "Other",
+  },
+};
+
 const BADGE_CSS = {
   hot: "badge-hot", new: "badge-new", limited: "badge-limited", sale: "badge-sale",
 };
@@ -488,7 +500,7 @@ function buildCard(deal, index) {
   const badgeLabel = L.badgeLabels[deal.badge];
   const badgeCss   = BADGE_CSS[deal.badge];
   const catIcon    = CAT_ICONS[deal.categoria] || "📦";
-  const catLabel   = deal.categoria.charAt(0).toUpperCase() + deal.categoria.slice(1);
+  const catLabel   = (CAT_LABELS[currentLang] || CAT_LABELS.es)[deal.categoria] || deal.categoria;
 
   /* Price row */
   const priceHtml = deal.precio > 0

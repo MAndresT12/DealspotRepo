@@ -1,42 +1,24 @@
 /* ── VARIABLES ── */
 :root {
-  /* ── Background layers (dark navy) ── */
   --bg: #011C3F;
   --surface: #021e47;
   --surface2: #042258;
-
-  /* ── Borders ── */
   --border: rgba(255, 255, 255, .07);
   --border2: rgba(255, 255, 255, .13);
-
-  /* ── Brand palette ── */
   --red: #D11A1E;
-  /* primary CTA, badges */
   --red-h: #e82a2e;
-  /* hover */
   --green: #84C11B;
-  /* prices, savings */
   --green-h: #96d820;
   --yellow: #FDD513;
-  /* coupons, highlights */
   --blue: #02A0F4;
-  /* links, info, timer */
   --wa-green: #25D366;
-
-  /* ── Backward-compat aliases ── */
   --orange: #D11A1E;
   --orange-h: #e82a2e;
-
-  /* ── Text ── */
   --text: #FEFEFE;
   --text2: #a8c4d8;
   --text3: #5a7a99;
-
-  /* ── Shape ── */
   --r: 12px;
   --r-lg: 18px;
-
-  /* ── Fonts ── */
   --font-d: 'Syne', sans-serif;
   --font-b: 'DM Sans', sans-serif;
 }
@@ -62,6 +44,10 @@ body {
   overflow-x: hidden;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -79,7 +65,8 @@ img {
   display: block;
 }
 
-input {
+input,
+textarea {
   font-family: inherit;
 }
 
@@ -97,7 +84,7 @@ input {
 }
 
 /* ════════════════════════════════════════════
-   HEADER  — fixed layout: logo | search (flex-1) | lang
+   HEADER
 ════════════════════════════════════════════ */
 .header {
   position: sticky;
@@ -115,9 +102,6 @@ input {
   gap: .75rem;
 }
 
-/* ── LOGO IMAGE ──
-   La imagen tiene el nombre ya integrado (wordmark).
-   Se ajusta automáticamente al alto del header.         */
 .logo {
   display: flex;
   align-items: center;
@@ -126,16 +110,12 @@ input {
 }
 
 .logo-img {
-  /* Tamaño automático — sólo limitamos el alto máximo.
-     width:auto mantiene la proporción original de la imagen. */
   height: clamp(28px, 4vw, 40px);
   width: auto;
   max-width: 200px;
-  /* evita que sea enorme en pantallas anchas */
   object-fit: contain;
   object-position: left center;
   display: block;
-  /* Suaviza la carga de imagen */
   transition: opacity .2s;
 }
 
@@ -143,12 +123,8 @@ input {
   opacity: 0;
 }
 
-/* oculta si src vacío (imagen no cargada aún) */
-
-/* ── Header search — takes all available space ── */
 .header-search {
   flex: 1 1 auto;
-  /* ← KEY: fills remaining space */
   min-width: 0;
 }
 
@@ -172,16 +148,13 @@ input {
   color: var(--text3);
 }
 
-/* ── Header right — always at the far right ── */
 .header-right {
   flex-shrink: 0;
-  /* ← never shrink; stays rightmost */
   display: flex;
   align-items: center;
   gap: .5rem;
 }
 
-/* ── Language switch ── */
 .lang-switch {
   display: flex;
   gap: .2rem;
@@ -211,7 +184,6 @@ input {
   color: var(--text);
 }
 
-/* Menu btn (mobile) */
 .menu-btn {
   display: none;
   color: var(--text2);
@@ -243,7 +215,6 @@ input {
   text-align: center;
 }
 
-/* ── Hero logo ── */
 .hero-logo-wrap {
   display: flex;
   justify-content: center;
@@ -301,7 +272,6 @@ input {
   margin: 0 auto;
 }
 
-/* ── Hero search ── */
 .hero-search-wrap {
   margin: 2rem auto 0;
   max-width: 560px;
@@ -328,27 +298,6 @@ input {
 
 .hero-search-wrap input::placeholder {
   color: var(--text3);
-}
-
-/* ── Hero banner images ── */
-.hero-img-wrap {
-  margin: 2.5rem auto 0;
-  max-width: 900px;
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  box-shadow: 0 16px 60px rgba(0, 0, 0, .5);
-}
-
-.hero-banner {
-  display: none;
-  width: 100%;
-  height: auto;
-  border-radius: var(--r-lg);
-}
-
-.hero-banner.active {
-  display: block;
-  animation: fadeIn .4s ease both;
 }
 
 @keyframes fadeIn {
@@ -520,7 +469,6 @@ input {
   }
 }
 
-/* Badge */
 .card-badge {
   position: absolute;
   top: .6rem;
@@ -554,7 +502,6 @@ input {
   color: #fff;
 }
 
-/* Image */
 .card-img-wrap {
   position: relative;
   aspect-ratio: 1;
@@ -598,7 +545,6 @@ input {
   opacity: 1;
 }
 
-/* Info */
 .card-info {
   padding: .9rem;
   display: flex;
@@ -650,7 +596,6 @@ input {
   overflow: hidden;
 }
 
-/* Pricing */
 .card-price-row {
   display: flex;
   align-items: baseline;
@@ -687,7 +632,6 @@ input {
   color: var(--text2);
 }
 
-/* Timer (deal expiry) */
 .card-timer {
   font-size: .73rem;
   color: var(--blue);
@@ -698,9 +642,7 @@ input {
   color: var(--red);
 }
 
-/* ══════════════════════════════════
-   COUPON CHIP  (new design)
-══════════════════════════════════ */
+/* ── COUPON CHIP ── */
 .card-coupon {
   background: rgba(253, 213, 19, .06);
   border: 1px dashed rgba(253, 213, 19, .3);
@@ -712,7 +654,6 @@ input {
   gap: .35rem;
 }
 
-/* Top row: scissors + label + code + copy btn */
 .coupon-row {
   display: flex;
   align-items: center;
@@ -720,7 +661,6 @@ input {
   flex-wrap: wrap;
 }
 
-/* Scissors icon */
 .scissors-icon {
   flex-shrink: 0;
   color: var(--yellow);
@@ -781,7 +721,6 @@ input {
   transform: scale(1.05);
 }
 
-/* Copied state */
 .coupon-copy.copied {
   background: rgba(132, 193, 27, .18);
   color: var(--green);
@@ -803,7 +742,6 @@ input {
   }
 }
 
-/* Coupon countdown row */
 .coupon-timer-row {
   display: flex;
   align-items: center;
@@ -846,7 +784,6 @@ input {
   }
 }
 
-/* CTA */
 .card-cta {
   display: block;
   width: 100%;
@@ -867,7 +804,6 @@ input {
   box-shadow: 0 4px 18px rgba(209, 26, 30, .35);
 }
 
-/* ── Empty state ── */
 .empty {
   grid-column: 1/-1;
   text-align: center;
@@ -985,7 +921,6 @@ input {
   color: var(--text);
 }
 
-/* Accordion */
 .how-accordion-wrap {
   display: flex;
   flex-direction: column;
@@ -1075,7 +1010,7 @@ input {
   line-height: 1.7;
 }
 
-/* ── Community card (below accordion) ── */
+/* ── Community card ── */
 .community-card {
   margin-top: .6rem;
   background: linear-gradient(135deg, rgba(37, 211, 102, .1) 0%, rgba(1, 28, 63, .8) 60%);
@@ -1090,7 +1025,6 @@ input {
   overflow: hidden;
 }
 
-/* Decorative glow */
 .community-card::before {
   content: '';
   position: absolute;
@@ -1168,12 +1102,262 @@ input {
 }
 
 /* ════════════════════════════════════════════
+   CONTACT SECTION
+════════════════════════════════════════════ */
+.contact-section {
+  padding: 5rem 0;
+  border-top: 1px solid var(--border);
+  background:
+    radial-gradient(ellipse 70% 50% at 0% 50%, rgba(2, 160, 244, .06) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 100% 50%, rgba(209, 26, 30, .06) 0%, transparent 70%);
+}
+
+.contact-inner {
+  display: grid;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (min-width: 860px) {
+  .contact-inner {
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5rem;
+  }
+}
+
+/* Left column */
+.contact-eyebrow {
+  display: inline-block;
+  font-size: .73rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--blue);
+  margin-bottom: .75rem;
+}
+
+.contact-title {
+  font-family: var(--font-d);
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: .75rem;
+}
+
+.contact-sub {
+  font-size: .95rem;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.contact-cards {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.contact-info-card {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: .9rem 1rem;
+  transition: border-color .2s;
+}
+
+.contact-info-card:hover {
+  border-color: var(--border2);
+}
+
+.contact-info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(2, 160, 244, .12);
+  border: 1px solid rgba(2, 160, 244, .2);
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-info-icon--wa {
+  background: rgba(37, 211, 102, .12);
+  border-color: rgba(37, 211, 102, .2);
+  color: var(--wa-green);
+}
+
+.contact-info-label {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text3);
+  margin-bottom: .15rem;
+}
+
+.contact-info-value {
+  font-size: .875rem;
+  font-weight: 600;
+  color: var(--text2);
+}
+
+/* Right column — form */
+.contact-right {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 2rem;
+}
+
+@media (min-width: 640px) {
+  .contact-right {
+    padding: 2.5rem;
+  }
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 500px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.form-label {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--text2);
+  letter-spacing: .03em;
+}
+
+.form-input {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: .75rem 1rem;
+  color: var(--text);
+  font-size: .9rem;
+  font-family: var(--font-b);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+}
+
+.form-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(2, 160, 244, .12);
+}
+
+.form-input::placeholder {
+  color: var(--text3);
+}
+
+.form-input:invalid:not(:placeholder-shown) {
+  border-color: var(--red);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 130px;
+  line-height: 1.6;
+}
+
+.contact-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  background: var(--red);
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 700;
+  padding: .9rem 1.75rem;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-b);
+  transition: background .18s, transform .18s, box-shadow .18s;
+  width: 100%;
+}
+
+.contact-submit:hover:not(:disabled) {
+  background: var(--red-h);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(209, 26, 30, .35);
+}
+
+.contact-submit:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Inline spinner inside button */
+.contact-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .3);
+  border-top-color: #fff;
+  animation: spin .6s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Result message */
+.contact-result {
+  font-size: .875rem;
+  font-weight: 500;
+  padding: 0;
+  border-radius: 8px;
+  text-align: center;
+  transition: all .3s;
+}
+
+.contact-result.success {
+  background: rgba(132, 193, 27, .1);
+  border: 1px solid rgba(132, 193, 27, .25);
+  color: var(--green);
+  padding: .75rem 1rem;
+}
+
+.contact-result.error {
+  background: rgba(209, 26, 30, .1);
+  border: 1px solid rgba(209, 26, 30, .2);
+  color: #ff6b6b;
+  padding: .75rem 1rem;
+}
+
+/* ════════════════════════════════════════════
    FOOTER
 ════════════════════════════════════════════ */
 .footer {
   background: var(--surface);
   border-top: 1px solid var(--border);
-  padding: 2rem 0;
+  padding: 2.5rem 0 2rem;
   text-align: center;
   font-size: .82rem;
   color: var(--text3);
@@ -1192,6 +1376,53 @@ input {
   max-width: 160px;
   object-fit: contain;
   opacity: .85;
+}
+
+.footer-sub {
+  margin-top: .3rem;
+  font-size: .78rem;
+  color: var(--text3);
+}
+
+/* ── Footer legal nav ── */
+.footer-legal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .35rem .5rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.footer-legal-link {
+  font-size: .78rem;
+  color: var(--text3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-b);
+  padding: .15rem 0;
+  transition: color .15s;
+  text-decoration: none;
+}
+
+.footer-legal-link:hover {
+  color: var(--blue);
+  text-decoration: underline;
+}
+
+.footer-legal-sep {
+  color: var(--border2);
+  font-size: .7rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.footer-rights {
+  margin-top: .5rem;
+  font-size: .75rem;
+  color: var(--text3);
+  opacity: .7;
 }
 
 /* ════════════════════════════════════════════
@@ -1273,6 +1504,485 @@ input {
     width: 26px;
     height: 26px;
   }
+}
+
+/* ════════════════════════════════════════════
+   COOKIE CONSENT BANNER
+════════════════════════════════════════════ */
+.cookie-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  background: rgba(2, 30, 71, .97);
+  border-top: 1px solid var(--border2);
+  backdrop-filter: blur(16px);
+  padding: 1rem 1.25rem;
+  transform: translateY(100%);
+  transition: transform .4s cubic-bezier(.22, 1, .36, 1);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, .4);
+}
+
+.cookie-banner.visible {
+  transform: translateY(0);
+}
+
+.cookie-banner-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.cookie-banner-text {
+  flex: 1;
+  min-width: 200px;
+  font-size: .82rem;
+  color: var(--text2);
+  line-height: 1.6;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .3rem;
+}
+
+.cookie-banner-title {
+  display: block;
+  width: 100%;
+  font-size: .9rem;
+  color: var(--text);
+  margin-bottom: .2rem;
+}
+
+.cookie-more-link {
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-size: .82rem;
+  font-family: var(--font-b);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color .15s;
+}
+
+.cookie-more-link:hover {
+  color: #4db8ff;
+}
+
+.cookie-banner-actions {
+  display: flex;
+  gap: .6rem;
+  flex-shrink: 0;
+}
+
+.cookie-btn {
+  padding: .55rem 1.1rem;
+  border-radius: 9px;
+  font-size: .82rem;
+  font-weight: 700;
+  font-family: var(--font-b);
+  cursor: pointer;
+  border: none;
+  transition: background .15s, transform .15s;
+  white-space: nowrap;
+}
+
+.cookie-btn--decline {
+  background: var(--surface2);
+  color: var(--text2);
+  border: 1px solid var(--border2);
+}
+
+.cookie-btn--decline:hover {
+  background: var(--border2);
+  color: var(--text);
+}
+
+.cookie-btn--accept {
+  background: var(--red);
+  color: #fff;
+}
+
+.cookie-btn--accept:hover {
+  background: var(--red-h);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .cookie-banner-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .cookie-banner-actions {
+    width: 100%;
+  }
+
+  .cookie-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* ════════════════════════════════════════════
+   LEGAL MODALS
+════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: rgba(1, 10, 28, .8);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(.96) translateY(10px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+
+.modal.open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+
+/* Modal dialog box */
+.modal-header,
+.modal-body {
+  position: relative;
+}
+
+.modal>* {
+  position: relative;
+}
+
+/* We wrap the modal content in a dialog container */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.4rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: var(--font-d);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -.02em;
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--surface2);
+  color: var(--text2);
+  border: none;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  flex-shrink: 0;
+}
+
+.modal-close:hover {
+  background: var(--red);
+  color: #fff;
+}
+
+.modal-body {
+  overflow-y: auto;
+  padding: 1.5rem;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface2) transparent;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--surface2);
+  border-radius: 2px;
+}
+
+/* The actual dialog container (child of .modal) */
+.modal>.modal-header,
+.modal>.modal-body {
+  /* These are direct children — we need a wrapper */
+}
+
+/* Correct approach: all modals get a dialog box wrapper via CSS grid trick */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 700;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal.open {
+  display: grid;
+  place-items: center;
+  animation: modalIn .22s ease both;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(.96) translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Dialog inner box */
+.modal-header+.modal-body {
+  /* sibling selector to group them */
+}
+
+/* We target the dialog-like children with a wrapper div approach in CSS */
+.modal>.modal-header {
+  /* This won't work directly — the children need a container */
+  /* Actually in our HTML the modal element IS the container, 
+     but we position the inner content using a pseudo wrapper */
+}
+
+/* ── Clean approach: style modal's children as a unit ── */
+.modal-header,
+.modal>.modal-body {
+  /* These sit inside the modal which is the fixed overlay */
+  /* We need an inner box — add via ::before pseudo? No, JS approach is cleaner */
+  /* Actually, since we're using display:grid with place-items:center on .modal,
+     and our modal children (header + body) need to be inside a box,
+     let's just style the modal to look like a dialog using a child div. */
+}
+
+/* ── The real dialog box styles ──
+   The modal element is the full-screen overlay.
+   Inside, we render .modal-dialog as a child box.
+   Since the HTML uses .modal-header and .modal-body directly as children,
+   we group them visually by styling the entire .modal as a dialog-like surface.
+   
+   But that means the backdrop is the dialog — wrong.
+   
+   Let me use a different strategy: use the modal-overlay as backdrop
+   and style .modal itself as the dialog box, centered via fixed positioning.
+*/
+
+/* ── FINAL CLEAN MODAL APPROACH ── */
+/* Override all prior modal rules with this final clean version */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(.96);
+  z-index: 700;
+  width: min(680px, calc(100vw - 2rem));
+  max-height: calc(100vh - 3rem);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, .6);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.modal.open {
+  display: flex;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: modalSlideIn .22s ease both;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* ════════════════════════════════════════════
+   LEGAL CONTENT STYLES (inside modals)
+════════════════════════════════════════════ */
+.legal-content {
+  font-size: .875rem;
+  color: var(--text2);
+  line-height: 1.75;
+}
+
+.legal-updated {
+  font-size: .75rem;
+  color: var(--text3);
+  margin-bottom: 1.25rem;
+  padding: .4rem .75rem;
+  background: var(--surface2);
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.legal-content h3 {
+  font-family: var(--font-d);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin: 1.5rem 0 .5rem;
+  padding-bottom: .4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.legal-content h3:first-of-type {
+  margin-top: .5rem;
+}
+
+.legal-content h4 {
+  font-size: .875rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 1.1rem 0 .4rem;
+}
+
+.legal-content p {
+  margin-bottom: .75rem;
+  color: var(--text2);
+}
+
+.legal-content ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: .75rem;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.legal-content ul li {
+  padding-left: 1.25rem;
+  position: relative;
+  color: var(--text2);
+}
+
+.legal-content ul li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-size: .8rem;
+  top: .05em;
+}
+
+.legal-content a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color .15s;
+}
+
+.legal-content a:hover {
+  color: #4db8ff;
+}
+
+.legal-content code {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: .1em .4em;
+  font-size: .85em;
+  color: var(--yellow);
+  font-family: monospace;
+}
+
+/* Legal table */
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.legal-table th {
+  background: var(--surface2);
+  color: var(--text2);
+  font-weight: 600;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .5rem .75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+}
+
+.legal-table td {
+  padding: .5rem .75rem;
+  color: var(--text2);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.legal-table tr:last-child td {
+  border-bottom: none;
+}
+
+.legal-table tr:nth-child(even) td {
+  background: rgba(255, 255, 255, .02);
 }
 
 /* ── SKELETON ── */

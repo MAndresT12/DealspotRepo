@@ -1444,7 +1444,19 @@ textarea {
   font-weight: 700;
   text-decoration: none;
   box-shadow: 0 6px 24px rgba(37, 211, 102, .4);
-  transition: transform .2s, box-shadow .2s;
+  transition: transform .2s, box-shadow .2s, bottom .4s cubic-bezier(.22, 1, .36, 1);
+
+}
+
+body.cookie-visible .wa-float {
+  bottom: calc(1.75rem + 90px);
+  z-index: 600;
+}
+
+@media (max-width: 480px) {
+  body.cookie-visible .wa-float {
+    bottom: calc(1.25rem + 135px);
+  }
 }
 
 .wa-float:hover {

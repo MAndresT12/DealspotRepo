@@ -1168,25 +1168,30 @@ function initModals() {
 /* ── COOKIE BANNER ───────────────────────────────────────── */
 function initCookieBanner() {
   const consent = localStorage.getItem("ds_cookie_consent");
-  if (consent) return; // Already decided
+  if (consent) return;
 
   const banner = document.getElementById("cookieBanner");
   if (!banner) return;
 
-  // Show after small delay
-  setTimeout(() => banner.classList.add("visible"), 800);
+  const hideBanner = () => {
+    banner.classList.remove("visible");
+    document.body.classList.remove("cookie-visible");
+    setTimeout(() => banner.style.display = "none", 400);
+  };
+
+  setTimeout(() => {
+    banner.classList.add("visible");
+    document.body.classList.add("cookie-visible");
+  }, 800);
 
   document.getElementById("cookieAcceptBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "all");
-    banner.classList.remove("visible");
-    setTimeout(() => banner.style.display = "none", 400);
-    // Here you could activate Google Analytics if needed
+    hideBanner();
   });
 
   document.getElementById("cookieDeclineBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "essential");
-    banner.classList.remove("visible");
-    setTimeout(() => banner.style.display = "none", 400);
+    hideBanner();
   });
 }
 

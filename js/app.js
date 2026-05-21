@@ -1203,10 +1203,7 @@ function initModals() {
 function enableAnalytics() {
   if (typeof gtag !== "function") return;
   gtag("consent", "update", { analytics_storage: "granted" });
-  gtag("config", window.GA_MEASUREMENT_ID, {
-    anonymize_ip: true,
-    cookie_flags: "SameSite=None;Secure"
-  });
+  gtag("config", "G-2JHZWWX9EM", { anonymize_ip: true });
 }
 
 function disableAnalytics() {
@@ -1327,16 +1324,18 @@ window.deleteAllCookies = function () {
     }, 2000);
   }
 
-  // Mostrar el banner de nuevo para que el usuario elija de nuevo
+  // Cerrar modal y mostrar banner de nuevo
   setTimeout(() => {
     closeCookiePreferences();
     const banner = document.getElementById("cookieBanner");
     if (banner) {
-      banner.style.display = "";
-      setTimeout(() => {
-        banner.classList.add("visible");
-        document.body.classList.add("cookie-visible");
-      }, 300);
+      banner.style.removeProperty("display");
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          banner.classList.add("visible");
+          document.body.classList.add("cookie-visible");
+        }, 300);
+      });
     }
   }, 1600);
 };
@@ -1345,33 +1344,38 @@ window.deleteAllCookies = function () {
 function initCookieBanner() {
   const consent = localStorage.getItem("ds_cookie_consent");
 
-  // Ya eligió antes → aplicar preferencia guardada
+  // Ya eligió antes → aplicar preferencia guardada sin mostrar banner
   if (consent === "all") { enableAnalytics(); return; }
   if (consent === "essential") return;
 
+  // Primera visita: mostrar banner
   const banner = document.getElementById("cookieBanner");
   if (!banner) return;
 
-  const hideBanner = () => {
+  const hideBanner = (permanent = true) => {
     banner.classList.remove("visible");
     document.body.classList.remove("cookie-visible");
-    setTimeout(() => banner.style.display = "none", 400);
+    if (permanent) setTimeout(() => { banner.style.display = "none"; }, 400);
   };
 
-  setTimeout(() => {
-    banner.classList.add("visible");
-    document.body.classList.add("cookie-visible");
-  }, 800);
+  // Mostrar con pequeño delay para que la animación se vea
+  banner.style.removeProperty("display");
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      banner.classList.add("visible");
+      document.body.classList.add("cookie-visible");
+    }, 600);
+  });
 
   document.getElementById("cookieAcceptBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "all");
     enableAnalytics();
-    hideBanner();
+    hideBanner(true);
   });
 
   document.getElementById("cookieDeclineBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "essential");
-    hideBanner();
+    hideBanner(true);
   });
 }
 

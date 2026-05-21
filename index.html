@@ -72,20 +72,21 @@
     style-src   'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src    'self' https://fonts.gstatic.com;
     img-src     'self' data: blob: https: http:;
-    connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://docs.google.com https://api.web3forms.com;
+    connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://docs.google.com https://*.googleusercontent.com https://api.web3forms.com;
     frame-src   'none';
   ">
 
-  <!-- Google Analytics 4 — REEMPLAZA G-XXXXXXXXXX con tu Measurement ID real -->
+  <!-- Google Analytics 4 -->
   <script>
-    window.GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
+    window.GA_MEASUREMENT_ID = "G-2JHZWWX9EM";
     window.dataLayer = window.dataLayer || [];
     function gtag() { window.dataLayer.push(arguments); }
     window.gtag = gtag;
     gtag("consent", "default", { analytics_storage: "denied", ad_storage: "denied", wait_for_update: 500 });
     gtag("js", new Date());
+    gtag("config", "G-2JHZWWX9EM", { anonymize_ip: true });
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2JHZWWX9EM"></script>
 
   <!-- ══════════════════════════════════════════
        STRUCTURED DATA (JSON-LD)

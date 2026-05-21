@@ -112,6 +112,20 @@ const I18N = {
     cookieMore: "Política de Cookies",
     cookieAccept: "Aceptar todas",
     cookieDecline: "Solo esenciales",
+    /* Cookie preferences */
+    cookieManage: "⚙️ Gestionar",
+    cookiePrefsLabel: "⚙️ Preferencias de Cookies",
+    cookiePrefTitle: "⚙️ Preferencias de Cookies",
+    cookiePrefDesc: "Gestiona cómo usamos las cookies en este sitio. Las cookies esenciales siempre están activas ya que son necesarias para el funcionamiento básico.",
+    cookieCatEssentialName: "Esenciales",
+    cookieCatAlways: "Siempre activas",
+    cookieCatEssentialDesc: "Guardan tu preferencia de idioma y tu decisión sobre cookies. Sin ellas el sitio no funciona correctamente.",
+    cookieCatAnalyticsName: "Analítica",
+    cookieCatAnalyticsDesc: "Google Analytics nos ayuda a entender cómo se usa el sitio. Los datos son anónimos y no te identifican personalmente.",
+    cookiePrefReject: "Solo esenciales",
+    cookiePrefAll: "Aceptar todas",
+    cookiePrefSave: "Guardar preferencias",
+    cookiePrefSaved: "✓ Preferencias guardadas",
     /* Footer legal */
     legalSectionTitle: "Legal",
     affiliateDisclosureLabel: "Divulgación de Afiliados",
@@ -218,6 +232,20 @@ const I18N = {
     cookieMore: "Cookie Policy",
     cookieAccept: "Accept all",
     cookieDecline: "Essential only",
+    /* Cookie preferences */
+    cookieManage: "⚙️ Manage",
+    cookiePrefsLabel: "⚙️ Cookie Preferences",
+    cookiePrefTitle: "⚙️ Cookie Preferences",
+    cookiePrefDesc: "Manage how we use cookies on this site. Essential cookies are always active as they are required for basic functionality.",
+    cookieCatEssentialName: "Essential",
+    cookieCatAlways: "Always on",
+    cookieCatEssentialDesc: "Store your language preference and cookie decision. The site cannot work correctly without these.",
+    cookieCatAnalyticsName: "Analytics",
+    cookieCatAnalyticsDesc: "Google Analytics helps us understand how the site is used. Data is anonymous and does not identify you personally.",
+    cookiePrefReject: "Essential only",
+    cookiePrefAll: "Accept all",
+    cookiePrefSave: "Save preferences",
+    cookiePrefSaved: "✓ Preferences saved",
     /* Footer legal */
     legalSectionTitle: "Legal",
     affiliateDisclosureLabel: "Affiliate Disclosure",
@@ -1166,17 +1194,12 @@ function initModals() {
 }
 
 /* ── COOKIE BANNER ───────────────────────────────────────── */
+/* ── COOKIE BANNER ───────────────────────────────────────── */
 function initCookieBanner() {
   const consent = localStorage.getItem("ds_cookie_consent");
 
-  // Si ya aceptó antes, activa GA inmediatamente
-  if (consent === "all") {
-    enableAnalytics();
-    return;
-  }
-
-  // Si ya rechazó antes, no mostramos el banner de nuevo
-  if (consent === "essential") return;
+  if (consent === "all") { enableAnalytics(); return; }
+  if (consent === "essential") { disableAnalytics(); return; }
 
   const banner = document.getElementById("cookieBanner");
   if (!banner) return;
@@ -1195,18 +1218,106 @@ function initCookieBanner() {
   document.getElementById("cookieAcceptBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "all");
     hideBanner();
-    enableAnalytics(); // ← activa GA al aceptar
+    enableAnalytics();
   });
 
   document.getElementById("cookieDeclineBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "essential");
+    disableAnalytics();
     hideBanner();
   });
+
+  // Botón "Gestionar" abre el panel
+  document.getElementById("cookiePrefBtn")?.addEventListener("click", () => {
+    hideBanner();
+    openCookiePrefs();
+  });
+}
+
+/* ── COOKIE PREFERENCES PANEL ────────────────────────────── */
+window.openCookiePrefs = function () {
+  const overlay = document.getElementById("cookiePrefOverlay");
+  if (!overlay) return;
+
+  // Refleja el estado actual en el toggle
+  const consent = localStorage.getItem("ds_cookie_consent");
+  const toggle = document.getElementById("toggleAnalytics");
+  if (toggle) toggle.checked = consent === "all";
+
+  overlay.classList.add("open");
+  document.body.classList.add("modal-open");
+  document.getElementById("cookiePrefClose")?.focus();
+};
+
+function closeCookiePrefs() {
+  document.getElementById("cookiePrefOverlay")?.classList.remove("open");
+  document.body.classList.remove("modal-open");
+}
+
+function showPrefToast() {
+  const toast = document.getElementById("cookiePrefToast");
+  if (!toast) return;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+function savePrefs(analyticsEnabled) {
+  const value = analyticsEnabled ? "all" : "essential";
+  localStorage.setItem("ds_cookie_consent", value);
+  analyticsEnabled ? enableAnalytics() : disableAnalytics();
+
+  // Oculta el banner si aún está visible
+  const banner = document.getElementById("cookieBanner");
+  if (banner?.classList.contains("visible")) {
+    banner.classList.remove("visible");
+    document.body.classList.remove("cookie-visible");
+    setTimeout(() => banner.style.display = "none", 400);
+  }
+
+  closeCookiePrefs();
+  showPrefToast();
 }
 /* ── GOOGLE ANALYTICS ────────────────────────────────────── */
 function enableAnalytics() {
   if (typeof gtag !== "function") return;
   gtag("config", "G-2JHZWWX9EM", { anonymize_ip: true });
+}
+function initCookiePrefs() {
+  const overlay = document.getElementById("cookiePrefOverlay");
+  if (!overlay) return;
+
+  // Cerrar con overlay click
+  overlay.addEventListener("click", e => {
+    if (e.target === overlay) closeCookiePrefs();
+  });
+
+  // Cerrar con Escape
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && overlay.classList.contains("open")) closeCookiePrefs();
+  });
+
+  document.getElementById("cookiePrefClose")?.addEventListener("click", closeCookiePrefs);
+
+  document.getElementById("cookiePrefSave")?.addEventListener("click", () => {
+    const analytics = document.getElementById("toggleAnalytics")?.checked ?? false;
+    savePrefs(analytics);
+  });
+
+  document.getElementById("cookiePrefAll")?.addEventListener("click", () => {
+    const toggle = document.getElementById("toggleAnalytics");
+    if (toggle) toggle.checked = true;
+    savePrefs(true);
+  });
+
+  document.getElementById("cookiePrefReject")?.addEventListener("click", () => {
+    const toggle = document.getElementById("toggleAnalytics");
+    if (toggle) toggle.checked = false;
+    savePrefs(false);
+  });
+}
+
+function disableAnalytics() {
+  window["ga-disable-G-2JHZWWX9EM"] = true;
 }
 
 /* ── CONTACT FORM ────────────────────────────────────────── */
@@ -1332,6 +1443,7 @@ document.addEventListener("DOMContentLoaded", () => {
   applyLang(currentLang);
   initModals();
   initCookieBanner();
+  initCookiePrefs();
   initContactForm();
   init();
 });

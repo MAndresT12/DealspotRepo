@@ -124,6 +124,7 @@
     gtag('js', new Date());
     // La configuración final la maneja app.js según el consentimiento de cookies
   </script>
+
 </head>
 
 <body>
@@ -365,6 +366,11 @@
           Política de Cookies
         </button>
         <span class="footer-legal-sep" aria-hidden="true">·</span>
+        <button class="footer-legal-link" onclick="openCookiePrefs()" data-i18n="cookiePrefsLabel">
+          ⚙️ Preferencias de Cookies
+        </button>
+        <span class="footer-legal-sep" aria-hidden="true">·</span>
+
         <a class="footer-legal-link" href="#contact" data-i18n="contactNavLabel">Contacto</a>
       </nav>
 
@@ -400,6 +406,9 @@
           Cookies</button>.
       </div>
       <div class="cookie-banner-actions">
+        <button class="cookie-btn cookie-btn--decline" id="cookiePrefBtn" data-i18n="cookieManage">
+          ⚙️ Gestionar
+        </button>
         <button class="cookie-btn cookie-btn--decline" id="cookieDeclineBtn" data-i18n="cookieDecline">
           Solo esenciales
         </button>
@@ -475,7 +484,86 @@
     </div>
     <div class="modal-body" id="modal-cookies-body"><!-- Rendered by JS --></div>
   </div>
+  <!-- ════════════════════════════════════════════
+       COOKIE PREFERENCES MODAL
+  ════════════════════════════════════════════ -->
+  <div class="cookie-pref-overlay" id="cookiePrefOverlay" role="dialog" aria-modal="true"
+    aria-labelledby="cookiePrefTitle">
+    <div class="cookie-pref-box">
+      <div class="cookie-pref-header">
+        <h2 class="cookie-pref-title" id="cookiePrefTitle" data-i18n="cookiePrefTitle">
+          ⚙️ Preferencias de Cookies
+        </h2>
+        <button class="cookie-pref-close" id="cookiePrefClose" aria-label="Cerrar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
 
+      <div class="cookie-pref-body">
+        <p class="cookie-pref-desc" data-i18n="cookiePrefDesc">
+          Gestiona cómo usamos las cookies en este sitio. Las cookies esenciales siempre están
+          activas ya que son necesarias para el funcionamiento básico.
+        </p>
+
+        <!-- Essential -->
+        <div class="cookie-cat active">
+          <div class="cookie-cat-info">
+            <div class="cookie-cat-name">
+              🔒 <span data-i18n="cookieCatEssentialName">Esenciales</span>
+              <span class="cookie-cat-badge" data-i18n="cookieCatAlways">Siempre activas</span>
+            </div>
+            <p class="cookie-cat-desc" data-i18n="cookieCatEssentialDesc">
+              Guardan tu preferencia de idioma y tu decisión sobre cookies.
+              Sin ellas el sitio no funciona correctamente.
+            </p>
+          </div>
+          <div class="cookie-toggle-wrap">
+            <label class="cookie-toggle">
+              <input type="checkbox" checked disabled />
+              <span class="cookie-toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="cookie-cat" id="cookieCatAnalytics">
+          <div class="cookie-cat-info">
+            <div class="cookie-cat-name">
+              📊 <span data-i18n="cookieCatAnalyticsName">Analítica</span>
+            </div>
+            <p class="cookie-cat-desc" data-i18n="cookieCatAnalyticsDesc">
+              Google Analytics nos ayuda a entender cómo se usa el sitio.
+              Los datos son anónimos y no te identifican personalmente.
+            </p>
+          </div>
+          <div class="cookie-toggle-wrap">
+            <label class="cookie-toggle">
+              <input type="checkbox" id="toggleAnalytics" />
+              <span class="cookie-toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="cookie-pref-footer">
+        <button class="cookie-pref-btn cookie-pref-btn--reject" id="cookiePrefReject" data-i18n="cookiePrefReject">Solo
+          esenciales</button>
+        <button class="cookie-pref-btn cookie-pref-btn--all" id="cookiePrefAll" data-i18n="cookiePrefAll">Aceptar
+          todas</button>
+        <button class="cookie-pref-btn cookie-pref-btn--save" id="cookiePrefSave" data-i18n="cookiePrefSave">Guardar
+          preferencias</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de confirmación -->
+  <div class="cookie-pref-toast" id="cookiePrefToast" data-i18n="cookiePrefSaved">
+    ✓ Preferencias guardadas
+  </div>
   <script src="js/app.js"></script>
 </body>
 

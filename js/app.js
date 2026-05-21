@@ -1168,7 +1168,15 @@ function initModals() {
 /* ── COOKIE BANNER ───────────────────────────────────────── */
 function initCookieBanner() {
   const consent = localStorage.getItem("ds_cookie_consent");
-  if (consent) return;
+
+  // Si ya aceptó antes, activa GA inmediatamente
+  if (consent === "all") {
+    enableAnalytics();
+    return;
+  }
+
+  // Si ya rechazó antes, no mostramos el banner de nuevo
+  if (consent === "essential") return;
 
   const banner = document.getElementById("cookieBanner");
   if (!banner) return;
@@ -1187,12 +1195,18 @@ function initCookieBanner() {
   document.getElementById("cookieAcceptBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "all");
     hideBanner();
+    enableAnalytics(); // ← activa GA al aceptar
   });
 
   document.getElementById("cookieDeclineBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "essential");
     hideBanner();
   });
+}
+/* ── GOOGLE ANALYTICS ────────────────────────────────────── */
+function enableAnalytics() {
+  if (typeof gtag !== "function") return;
+  gtag("config", "G-2JHZWWX9EM", { anonymize_ip: true });
 }
 
 /* ── CONTACT FORM ────────────────────────────────────────── */

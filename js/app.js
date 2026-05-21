@@ -1165,42 +1165,10 @@ function initModals() {
   });
 }
 
-/* ── GOOGLE ANALYTICS 4 ──────────────────────────────────── */
-function loadGoogleAnalytics() {
-  const id = window.GA_MEASUREMENT_ID;
-  if (!id || id === "G-XXXXXXXXXX" || window.gaLoaded) return;
-  window.gaLoaded = true;
-
-  // Inyectar script de GA4 dinámicamente
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
-  document.head.appendChild(script);
-
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  window.gtag = gtag;
-  gtag("js", new Date());
-  gtag("config", id, {
-    anonymize_ip: true,          // Anonimiza IPs (buena práctica GDPR)
-    cookie_flags: "SameSite=None;Secure",
-  });
-
-  console.log("✅ Google Analytics cargado");
-}
-
 /* ── COOKIE BANNER ───────────────────────────────────────── */
 function initCookieBanner() {
   const consent = localStorage.getItem("ds_cookie_consent");
-
-  // Si ya aceptó todas las cookies anteriormente, cargar GA inmediatamente
-  if (consent === "all") {
-    loadGoogleAnalytics();
-    return;
-  }
-
-  // Si ya eligió "solo esenciales", no mostrar banner ni cargar GA
-  if (consent === "essential") return;
+  if (consent) return;
 
   const banner = document.getElementById("cookieBanner");
   if (!banner) return;
@@ -1218,13 +1186,11 @@ function initCookieBanner() {
 
   document.getElementById("cookieAcceptBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "all");
-    loadGoogleAnalytics(); // Cargar GA cuando el usuario acepta
     hideBanner();
   });
 
   document.getElementById("cookieDeclineBtn")?.addEventListener("click", () => {
     localStorage.setItem("ds_cookie_consent", "essential");
-    // NO cargar GA si rechaza
     hideBanner();
   });
 }
